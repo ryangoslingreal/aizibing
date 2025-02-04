@@ -4,16 +4,32 @@ import java.util.Random;
 import java.util.Scanner;
 
 class GeneticSystem {
-    boolean[][] genes = new boolean[10][10];
-    Random rand = new Random(42);
+    public int GENE_POPULATION = 10; // could just add a getter and make these private but thats ugly
+    public int GENE_LENGTH = 10;
 
-    public void initialise() {
-        for (int x = 0; x < 10; x++) {
-            for (int y = 0; y < 10; y++) {
-                genes[x][y] = rand.nextInt(2) == 0; // Randomly generate 0 or 1
+    boolean[][] genes = new boolean[GENE_POPULATION][GENE_LENGTH];
+    Random rand = new Random(); // set seed here!
+
+    private boolean MINMAX_FITNESS = true; // true = maximise, false = minimise
+
+    private float ELITE_PERCENT = 0.2f;
+    private float KILL_PERCENT = 0.f;//0.2f; // set to 0 to disable kill .. 
+    private int ELITE_THRESHOLD = (int) (GENE_POPULATION * ELITE_PERCENT); // 10 = population
+    private int KILL_THRESHOLD = GENE_POPULATION - (int) (GENE_POPULATION * KILL_PERCENT); // 10 - (10 - 20%)    - one thing to note, maybe dont kill & renoise every gen? 
+
+    // initialise maybe return seed used?
+    public long initialise() {
+        long seed = rand.nextLong();
+        rand.setSeed(seed);
+
+        for (int x = 0; x < GENE_POPULATION; x++) {
+            for (int y = 0; y < GENE_LENGTH; y++) {
+                genes[x][y] = rand.nextInt(2) == 0; // randomly generate true or false
             }
         }
-        sortGenesByFitness();
+        
+        sortGenesByFitness(); // needs to be sorted before worked on
+        return seed;
     }
 
     // java provides nice function for us :D ... when sorting compared to fitness, we obviously have to call fitness (twice). should we cache gene's fitness WITH array? i.e pair them together... for now just use this
@@ -21,21 +37,13 @@ class GeneticSystem {
         Arrays.sort(genes, (g1, g2) -> Float.compare(fitness(g2), fitness(g1))); // Sort in descending order
     }
 
-    private boolean MINMAX_FITNESS = true; // true = maximise, false = minimise
-
-    private float ELITE_PERCENT = 0.2f;
-    private float KILL_PERCENT = 0.2f;
-    private int ELITE_THRESHOLD = (int) (10 * ELITE_PERCENT); // 10 = population
-    private int KILL_THRESHOLD = 10 - (int) (10 * KILL_PERCENT); // 10 - (10 - 20%)
-
-
     boolean[] crossover(boolean[] parent1, boolean[] parent2) {
-        boolean[] child = new boolean[10];
-        int crossoverPoint = rand.nextInt(10); // generate random split point
+        boolean[] child = new boolean[GENE_LENGTH];
+        int crossoverPoint = rand.nextInt(GENE_LENGTH); // generate random split point
 
         // implement 'cross over more from fitter parent'?
         
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < GENE_LENGTH; i++) {
             child[i] = (i < crossoverPoint) ? parent1[i] : parent2[i];
         }
 
@@ -46,7 +54,7 @@ class GeneticSystem {
     public void step() {
         // loop thru genes, sort by fitness?
 
-        boolean[][] newGenes = new boolean[10][10];
+        boolean[][] newGenes = new boolean[GENE_POPULATION][GENE_LENGTH];
 
         // elitism - ignore top X%
         for (int i = 0; i < ELITE_THRESHOLD; i++) {
@@ -56,30 +64,26 @@ class GeneticSystem {
         // crossover & mutation 
         for (int i = ELITE_THRESHOLD; i < KILL_THRESHOLD; i++) {
             // random parent selection. kinda bad since we want higher fitness = higher chance of being parent. Alternatives : Tournament O(1) and roulette wheel O(n)
-            int p1 = rand.nextInt(10); 
-            int p2 = rand.nextInt(10); 
+            int p1 = rand.nextInt(GENE_POPULATION); 
+            int p2 = rand.nextInt(GENE_POPULATION); // randomly select parent from population
             
             newGenes[i] = crossover(genes[p1], genes[p2]);
             // add mutation ?
         }
 
-        for (int i = KILL_THRESHOLD; i < 10; i++) { // kill introduces bad genes intentionally, however inhibits genes getting 'stuck'? (run code with and without kill to see)
-            for (int y = 0; y < 10; y++) {
+        for (int i = KILL_THRESHOLD; i < GENE_POPULATION; i++) { // kill introduces bad genes intentionally, however inhibits genes getting 'stuck'? (run code with and without kill to see)
+            for (int y = 0; y < GENE_LENGTH; y++) {
                 newGenes[i][y] = rand.nextInt(2) == 0; // randomly generate 0 or 1
             }
         }
 
-
-        //for (int i = 0; i < 10; i++) {
-            // Implement logic for new gene creation based on the fitness
-        //}
 
         genes = newGenes;
         sortGenesByFitness(); // sort at end of each step, rather than start. otherwise final step leaves genes unsorteds
     }
 
     public void outputGene(int n) {
-        for (int y = 0; y < 10; y++) {
+        for (int y = 0; y < GENE_LENGTH; y++) {
             System.out.print(genes[n][y] ? 1 : 0);
         }
         //System.out.println();
@@ -88,8 +92,8 @@ class GeneticSystem {
     // fitness function = sum all 'true'
     public float fitness(boolean[] gene) {
         int sum = 0;
-        for (int i = 0; i < 10; i++) {
-            if (MINMAX_FITNESS ? gene[i] : !gene[i]) { // if we want to maximise, gene[i] must be true. otherwise, minimise > gene[i] must be false.
+        for (int i = 0; i < GENE_LENGTH; i++) {
+            if (MINMAX_FITNESS ? gene[i] : !gene[i]) { // if we want to maximise, gene[i] must be true. otherwise, minimise means gene[i] must be false.
                 sum++;
             }
         }
@@ -98,42 +102,39 @@ class GeneticSystem {
 }
 
 public class Main {
-    public static void clear() {
-        System.out.print("\033[H\033[2J");  
-        System.out.flush();
-    }
     public static void main(String[] args) {
-        clear(); // just cuz vscode makes some ugly outputs
-
         GeneticSystem GS = new GeneticSystem();
-        GS.initialise();
 
-        /*for (int i = 0; i < 0; i++) {
-            GS.step();
-        }*/
+        long seed = GS.initialise();
+        System.out.println("Seed: " + seed);
 
         Scanner s = new Scanner(System.in);
-
-        int gen = 0;
+        int gen = 0; 
 
         do {
-            clear();
-            System.out.println("Generation: " + ++gen);
+            System.out.println("Generation: " + gen++);
         
-            GS.step(); // Advance to the next generation
-        
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < GS.GENE_POPULATION; i++) {
+                System.out.print(i + 1 + ": ");
                 GS.outputGene(i);
                 System.out.println("    " + GS.fitness(GS.genes[i]));
             }
-            s.nextLine(); // Wait for user input
+
+            System.out.println();
+            
+            GS.step(); // step to next gen, put at end to show gen 0
+            s.nextLine(); // wait for next input
         }
         while (s.hasNextLine());
-        
-        /*GS.outputGene(0);
-        System.out.println(GS.fitness(GS.genes[0]));
-
-        GS.outputGene(9);
-        System.out.println(GS.fitness(GS.genes[9]));*/
+        s.close();
     }
 }
+
+/*
+
+how can we prevent 80% of genes getting max fitness, then due to swapover retrace back to dumb? 
+^ kill obviously affects this
+
+then again, does it really matter ? for larger populations it'll be unlikely anyway
+
+*/
