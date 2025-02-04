@@ -13,7 +13,7 @@ class GeneticSystem {
     private boolean MINMAX_FITNESS = true; // true = maximise, false = minimise
 
     private float ELITE_PERCENT = 0.2f;
-    private float KILL_PERCENT = 0.f;//0.2f; // set to 0 to disable kill .. 
+    private float KILL_PERCENT = 0.2f; //0.2f; // set to 0 to disable kill .. 
     private int ELITE_THRESHOLD = (int) (GENE_POPULATION * ELITE_PERCENT); // 10 = population
     private int KILL_THRESHOLD = GENE_POPULATION - (int) (GENE_POPULATION * KILL_PERCENT); // 10 - (10 - 20%)    - one thing to note, maybe dont kill & renoise every gen? 
 
@@ -93,6 +93,7 @@ class GeneticSystem {
     public float fitness(boolean[] gene) {
         int sum = 0;
         for (int i = 0; i < GENE_LENGTH; i++) {
+            if (i == 3 && gene[i]) sum-=5;
             if (MINMAX_FITNESS ? gene[i] : !gene[i]) { // if we want to maximise, gene[i] must be true. otherwise, minimise means gene[i] must be false.
                 sum++;
             }
@@ -119,7 +120,6 @@ public class Main {
                 GS.outputGene(i);
                 System.out.println("    " + GS.fitness(GS.genes[i]));
             }
-
             System.out.println();
             
             GS.step(); // step to next gen, put at end to show gen 0
