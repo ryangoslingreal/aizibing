@@ -21,4 +21,8 @@ class DemoFitnessFunction(FitnessFunction):
         return sum(gene)
     
 
+# instead of making multiple different classes here,
+# how about just one class, which, __init__ is given the fitness function from notebook, then calculate (being cached) just calls that
+    
+
 # https://docs.python.org/dev/library/functools.html#functools.cache

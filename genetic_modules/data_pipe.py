@@ -8,8 +8,30 @@ Gene = Tuple[bool, ...]
 # basically, this class handles dataset input, preprocess (folding)
 # need to pass in dataset
 
+# DataHandler? PopulationHandler? ... need a proper name here guys...
 class DataPipe:
-    def __init__(self):
+    def __init__(self, config, create_gene):
+        self.population = self.Population(config)
+
+    #def    # function that 'adds' multiple preprocessing functions into 'queue'? 
+
+    class Population:
+        def __init__(self, config):
+            self.config = config
+            self.genes = []
+
+        def add_gene(self, gene):
+            # add config checks here? 
+            self.genes.append(gene)
+
+        def sort(self):
+            self.genes.sort
+
+        def get(self):
+            return self.genes
+
+    def load_data(data):
+        # sequential pass data thru preprocess functions then load_function then 
         pass
 
     
