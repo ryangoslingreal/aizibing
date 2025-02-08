@@ -1,11 +1,11 @@
 from genetic_modules.genetic_config import GeneticConfig
 from genetic_modules.fitness_function import FitnessFunction
-from genetic_modules.data_pipe import DataPipe
+from genetic_modules.population_stream import PopulationStream
 
 
 # need a way to 'pipe' things in. i.e DataPipe (preprocess data etc), FitnessFunction, SelectionStrategy, GeneticAlgorithms (crossover, mutation, etc. elitism & padding too?)
 class GeneticSystem:
-    def __init__(self, config: GeneticConfig, data_pipe: DataPipe, fitness_function: FitnessFunction):
+    def __init__(self, config: GeneticConfig, population_stream: PopulationStream, fitness_function: FitnessFunction):
         self.population = [] # genes must be Tuple[bool]
 
         self.config = config

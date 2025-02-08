@@ -2,22 +2,24 @@ from abc import ABC, abstractmethod
 from typing import Tuple
 from functools import cache
 
+from genetic_modules.population_stream import Gene
+
 # basic super class, use for polymorphism, multiple methods of calculating fitness
 class FitnessFunction(ABC):
     # 'centralised' caching - abstracts subclass implementation
     @cache
-    def calculate(self, gene: Tuple[bool]) -> float:
+    def calculate(self, gene: Gene) -> float:
         return self._calculate(gene)
 
     # this method will be implemented in subclass
     @abstractmethod 
-    def _calculate(self, gene: Tuple[bool]) -> float:
+    def _calculate(self, gene: Gene) -> float:
         pass
 
 
 # inherit super, so this can be used instead
 class DemoFitnessFunction(FitnessFunction):
-    def _calculate(self, gene: Tuple[bool]) -> float:
+    def _calculate(self, gene: Gene) -> float:
         return sum(gene)
     
 

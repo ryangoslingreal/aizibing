@@ -8,8 +8,9 @@ Gene = Tuple[bool, ...]
 # basically, this class handles dataset input, preprocess (folding)
 # need to pass in dataset
 
-# DataHandler? PopulationHandler? ... need a proper name here guys...
-class DataPipe:
+# preprocess data, generate genes (need processing), 
+
+class PopulationStream:
     def __init__(self, config, create_gene):
         self.population = self.Population(config)
 
@@ -26,6 +27,8 @@ class DataPipe:
 
         def sort(self):
             self.genes.sort
+
+        # find 'hamming distance' (diversity of population) --- basically exploration vs exploitation --- to reduce computation, 'sample' population to get rough estimate of diversity ... target a certain value of diversity
 
         def get(self):
             return self.genes
