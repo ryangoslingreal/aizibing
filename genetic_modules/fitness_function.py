@@ -21,5 +21,4 @@ class DemoFitnessFunction(FitnessFunction):
         return sum(gene)
     
 
-# need to find way to cache here
 # https://docs.python.org/dev/library/functools.html#functools.cache

@@ -30,4 +30,11 @@ class GeneticSystem:
 
         
 
-# don't have to re-evaluate genes. fitness_cache must be stored and accessed from multiple places
+# its 1am way past my bed time soo
+# tomorrow, find nice way to plug in selection strategy
+# ^ prob just follow similar to fitness_func
+# add random select, tournament (with num tournies per selection as arg)
+# roulette wheel the best yeah yeah
+
+
+# this gonna be pretty cool codebase once everything can get plugged in and messed around with separately
