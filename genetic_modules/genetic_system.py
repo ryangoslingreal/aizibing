@@ -1,10 +1,11 @@
 from genetic_modules.genetic_config import GeneticConfig
 from genetic_modules.fitness_function import FitnessFunction
+from genetic_modules.data_pipe import DataPipe
 
 
 # need a way to 'pipe' things in. i.e DataPipe (preprocess data etc), FitnessFunction, SelectionStrategy, GeneticAlgorithms (crossover, mutation, etc. elitism & padding too?)
 class GeneticSystem:
-    def __init__(self, config: GeneticConfig, fitness_function: FitnessFunction):
+    def __init__(self, config: GeneticConfig, data_pipe: DataPipe, fitness_function: FitnessFunction):
         self.population = [] # genes must be Tuple[bool]
 
         self.config = config
@@ -38,3 +39,9 @@ class GeneticSystem:
 
 
 # this gonna be pretty cool codebase once everything can get plugged in and messed around with separately
+
+
+
+# use mypy to check types
+# btw, reason im 'typing' is cuz george recommended 'cpython' which is typed python... this might help implementation in future
+# also typing is good practice for error checking and documentation etc
