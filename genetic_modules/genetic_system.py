@@ -10,6 +10,9 @@ class GeneticSystem:
 
         self.config = config
         self.fitness_function = fitness_function
+        self.population_stream = population_stream
+
+        population_stream.set_fitness_function(fitness_function)
 
 
         self.elite_threshold = int(config.population_size * config.elite_percent)

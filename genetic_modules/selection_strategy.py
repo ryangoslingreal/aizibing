@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import List # List[Gene] is population
+from typing import Tuple, List # List[Gene] is population
 import random
 
 from genetic_modules.genetic_config import GeneticConfig
-from genetic_modules.population_stream import Gene, PopulationStream
+from genetic_modules.population_stream import PopulationStream
+
+Gene = Tuple[bool, ...]
 
 # pass datapipe in from init ?, so can get population piped in without having to pass it every call
 
