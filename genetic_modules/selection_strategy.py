@@ -9,9 +9,8 @@ Gene = Tuple[bool, ...]
 
 # pass datapipe in from init ?, so can get population piped in without having to pass it every call
 
-
 class SelectionStrategy(ABC):
-    def __init__(self, config: GeneticConfig, rng: random.Random):
+    def __init__(self, config: GeneticConfig, rng: random.Random): # pass PopStream thru here
         self.rng = rng
 
     @abstractmethod
@@ -20,6 +19,11 @@ class SelectionStrategy(ABC):
 
 
 class RandomSelection(SelectionStrategy):
+    def select(self, population: List[Gene]) -> Gene:
+        return self.rng.choice(population)
+
+
+class TournamentSelection(SelectionStrategy):
     def select(self, population: List[Gene]) -> Gene:
         return self.rng.choice(population)
 

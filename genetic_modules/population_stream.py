@@ -9,21 +9,29 @@ Gene = Tuple[bool, ...]
 # need to pass in dataset
 
 # preprocess data, generate genes (need processing), 
-# implement n-fold cross validation
+# implement n-fold cross validation (NFold from sklearn?)
 
 class PopulationStream:
-    def __init__(self, config, create_gene):
-        self.config = config
+    def __init__(self, create_gene = None):
         self.population = self.Population(self)
 
-    def set_fitness_function(self, fitness_function: FitnessFunction):
+    def initialise(self, config, fitness_function, rand):
+        self.config = config
         self.fitness_function = fitness_function
+
+        # generate genes randomly
+        for _ in range (config.population_size):
+            gene = tuple(rand.choice([True, False]) for _ in range(config.gene_length))
+            self.population.add_gene(gene)
+
+        # loop thru and compute gene using config etc - just use create_Gene for now... this func uses its own rand - need to link to other
+        #for _ in range(self.config.population_size):
+        #    gene = []
 
     #def    # function that 'adds' multiple preprocessing functions into 'queue'? 
 
     class Population:
         def __init__(self, stream): # can't give 'stream' type here. need to forward declare
-            self.config = stream.config
             self.stream = stream
 
             self.genes: List[Gene] = []
@@ -33,7 +41,7 @@ class PopulationStream:
             self.genes.append(gene)
 
         def sort(self): # implement this - find out how to connect fitness_function in a non-ugly way 
-            self.genes.sort(key=lambda g: self.stream.fitness_function.calculate(g), reverse=self.config.maximize_fitness)
+            self.genes.sort(key=lambda g: self.stream.fitness_function.calculate(g), reverse=self.stream.config.maximize_fitness)
 
         # find 'hamming distance' (diversity of population) --- basically exploration vs exploitation --- to reduce computation, 'sample' population to get rough estimate of diversity ... target a certain value of diversity
         # def diversity(self):

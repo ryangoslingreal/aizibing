@@ -13,3 +13,5 @@ class GeneticConfig:
     mutation_rate: float = 0.01
     
     maximize_fitness: bool = True
+
+    seed = None

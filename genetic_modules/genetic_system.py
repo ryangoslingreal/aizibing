@@ -2,18 +2,18 @@ from genetic_modules.genetic_config import GeneticConfig
 from genetic_modules.fitness_function import FitnessFunction
 from genetic_modules.population_stream import PopulationStream
 
+import random
 
 # need a way to 'pipe' things in. i.e DataPipe (preprocess data etc), FitnessFunction, SelectionStrategy, GeneticAlgorithms (crossover, mutation, etc. elitism & padding too?)
 class GeneticSystem:
     def __init__(self, config: GeneticConfig, population_stream: PopulationStream, fitness_function: FitnessFunction):
-        self.population = [] # genes must be Tuple[bool]
-
         self.config = config
         self.fitness_function = fitness_function
         self.population_stream = population_stream
 
-        population_stream.set_fitness_function(fitness_function)
+        self.rand = random.Random(config.seed) # either pass rand thru or initialise here ? surely here is better - but just means things can't be passed thru that use rand... maybe can pass rand as a param there
 
+        population_stream.initialise(config, fitness_function, self.rand)
 
         self.elite_threshold = int(config.population_size * config.elite_percent)
         self.padding_threshold = config.population_size - int(config.population_size * config.padding_percent)
@@ -21,18 +21,15 @@ class GeneticSystem:
         # pipe data in , preprocess ? turn into genes for pop
 
 
-    
-
-
-
-    def sort_genes_by_fitness(self):
-        self.population.sort(key=lambda g: self.fitness_function.calculate(g), reverse=self.config.maximize_fitness)
-
-
     def step(self):
         new_population = self.population[:self.elite_threshold] # copies elite genes over
 
-        
+    
+
+# ignore false entries (i.e all attrs selected = 0)
+
+
+
 
 # its 1am way past my bed time soo
 # tomorrow, find nice way to plug in selection strategy
