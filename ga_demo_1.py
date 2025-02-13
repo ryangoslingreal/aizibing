@@ -9,34 +9,49 @@ breast_cancer = datasets.load_breast_cancer()
 
 class GeneticAlgorithm():
     def __init__(self, data, gen, pop, rep, fold, elite, padding, mutation_rate):
+        """Initializes the genetic algorithm with population-based feature selection."""
         self.data = data
         self.gen = gen
         self.pop = pop
         self.rep = rep
         self.fold = fold
-        self.elite = elite
-        self.padding = padding
+        self.elite = int(elite * pop)
+        self.padding = int(padding * pop)
         self.mutation_rate = mutation_rate
         
         # Preprocess dataset
-        self.X, self.y, self.attributes = data.data, data.target, len(data.data[0])
+        self.X, self.y = data.data, data.target
+        self.attributes = self.X.shape[1]
         self.rep_folds = self.generateNFolds(self.X, self.y, self.rep, self.fold)
         
         # Generate initial population
         self.population = self.generateIndividuals(self.pop, self.attributes)
         
         for g in range(gen):
-            print(f"Generation {g}:")
-            # Pad generation with new random individuals 
-            if len(self.population) != self.pop:
-                difference = self.pop - len(self.population)
-                self.population += self.generateIndividuals(difference, self.attributes)
-            
+            print(f"/n--- Generation {g} ---")
             self.step()
         
     def step(self):
-        """Performs one generation step on the current population."""
-        final_fitness = []
+        self.pad_population()
+        
+        self.fitness_scores = self.evaluate_population()
+        
+        self.sort_population()        
+
+        for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
+            print(f"Position {i}: {individual}    Fitness: {fitness}")
+        
+        # TODO: Roulette wheel selection
+    
+    def pad_population(self):
+        """Ensures the population remains at self.pop by adding new individuals if necessary."""
+        difference = self.pop - len(self.population)
+        if difference > 0:
+            self.population += self.generateIndividuals(difference, self.attributes)
+    
+    def evaluate_population(self):
+        """Evaluates fitness for each individual in the population."""
+        fitness_scores = np.zeros(self.pop)
         
         # Individual loop
         for i, individual in enumerate(self.population):
@@ -47,33 +62,37 @@ class GeneticAlgorithm():
             
             # Rep loop
             for r in self.rep_folds:
-                fold_fitness = []
-                
                 # Fold loop
-                for train_idx, test_idx in self.rep_folds[r]:
-                    # Apply attribute mask
-                    X_train, X_test = self.X[train_idx][:, selected_attributes], self.X[test_idx][:, selected_attributes]
-                    y_train, y_test = self.y[train_idx], self.y[test_idx]
-                    
-                    # Train
-                    nb = GaussianNB()
-                    nb.fit(X_train, y_train)
-                    accuracy = nb.score(X_test, y_test)
-                    fold_fitness.append(accuracy)
+                fold_fitness = [
+                    self.evaluate_individual(selected_attributes, train_idx, test_idx)
+                    for train_idx, test_idx in self.rep_folds[r]
+                ]
                     
                 # Calculate average fitness across all folds
                 rep_fitness.append(np.mean(fold_fitness))
                 
             # Calculate average fitness across all reps
-            fitness = np.mean(rep_fitness)
-            final_fitness.append(fitness)
-            print(f"Individual {i}: {individual}    Fitness: {fitness}")
-            
-        # Sort population
-        sorted_indices = np.argsort(final_fitness)[::-1]
-        self.population = [self.population[i] for i in sorted_indices]
+            fitness_scores[i] = np.mean(rep_fitness)
+            print(f"Individual {i}: {individual}    Fitness: {fitness_scores[i]}")
         
-        # TODO: Roulette wheel selection
+        return fitness_scores
+    
+    def evaluate_individual(self, selected_attributes, train_idx, test_idx):
+        """Trains and evaluates an individual using GaussianNB."""
+        # Apply attribute mask
+        X_train, X_test = self.X[train_idx][:, selected_attributes], self.X[test_idx][:, selected_attributes]
+        y_train, y_test = self.y[train_idx], self.y[test_idx]
+                    
+        # Train
+        nb = GaussianNB()
+        nb.fit(X_train, y_train)
+        return nb.score(X_test, y_test)
+    
+    def sort_population(self):
+        """Sorts population by fitness scores."""
+        sorted_indices = np.argsort(self.fitness_scores)[::-1]
+        self.population = [self.population[i] for i in sorted_indices]
+        self.fitness_scores = [self.fitness_scores[i] for i in sorted_indices]
             
     def crossover(self, parent1, parent2):
         """Performs crossover between two parents and returns offspring."""
@@ -112,7 +131,7 @@ class GeneticAlgorithm():
             
         return rep_folds
             
-ga = GeneticAlgorithm(data=breast_cancer, 
+ga = GeneticAlgorithm(data=iris, 
                       gen=1, 
                       pop=10, 
                       rep=5, 
