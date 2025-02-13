@@ -1,6 +1,5 @@
 from sklearn.naive_bayes import GaussianNB
-from sklearn.model_selection import StratifiedKFold, cross_val_score
-from sklearn.metrics import accuracy_score
+from sklearn.model_selection import StratifiedKFold
 import numpy as np
 import random
 
@@ -39,38 +38,51 @@ class GeneticAlgorithm():
         """Performs one generation step on the current population."""
         final_fitness = []
         
+        # Individual loop
         for i, individual in enumerate(self.population):
             rep_fitness = []
             
+            # Attribute mask
             selected_attributes = np.array(individual, dtype=bool)
             
+            # Rep loop
             for r in self.rep_folds:
                 fold_fitness = []
                 
-                for train_idx, test_idx in self.rep_folds[r]:  
+                # Fold loop
+                for train_idx, test_idx in self.rep_folds[r]:
+                    # Apply attribute mask
                     X_train, X_test = self.X[train_idx][:, selected_attributes], self.X[test_idx][:, selected_attributes]
                     y_train, y_test = self.y[train_idx], self.y[test_idx]
                     
+                    # Train
                     nb = GaussianNB()
                     nb.fit(X_train, y_train)
                     accuracy = nb.score(X_test, y_test)
                     fold_fitness.append(accuracy)
                     
+                # Calculate average fitness across all folds
                 rep_fitness.append(np.mean(fold_fitness))
                 
+            # Calculate average fitness across all reps
             fitness = np.mean(rep_fitness)
             final_fitness.append(fitness)
             print(f"Individual {i}: {individual}    Fitness: {fitness}")
             
+        # Sort population
         sorted_indices = np.argsort(final_fitness)[::-1]
         self.population = [self.population[i] for i in sorted_indices]
+        
+        # TODO: Roulette wheel selection
             
     def crossover(self, parent1, parent2):
         """Performs crossover between two parents and returns offspring."""
+        # TODO
         pass
     
     def mutate(self, individual, mutation_rate):
         """Mutates an individual with a given mutation rate."""
+        # TODO
         pass
     
     @staticmethod
@@ -78,6 +90,9 @@ class GeneticAlgorithm():
         """Generates a specified number of random individuals."""
         population = []
         for _ in range(count):
+            # Generate random individual
+            # Ensure individual is valid
+            # If so, regenerate
             while True:
                 individual = [random.choice([True, False]) for _ in range(attributes)]
                 if any(individual):
@@ -89,6 +104,7 @@ class GeneticAlgorithm():
     
     @staticmethod
     def generateNFolds(X, y, rep, fold):
+        """Generates stratified k-fold splits for cross-validation."""
         rep_folds = {}
         for r in range(rep):
             skf = StratifiedKFold(n_splits=fold, shuffle=True, random_state=(42 + r))
