@@ -28,7 +28,7 @@ class GeneticAlgorithm():
         self.population = self.generateIndividuals(self.pop, self.attributes)
         
         for g in range(gen):
-            print(f"/n--- Generation {g} ---")
+            print(f"\n--- Generation {g} ---")
             self.step()
         
     def step(self):
