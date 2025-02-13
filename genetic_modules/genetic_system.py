@@ -24,6 +24,7 @@ class GeneticSystem:
 
     def step(self):
         new_population = self.population[:self.elite_threshold] # copies elite genes over
+        print(new_population)
 
     
 

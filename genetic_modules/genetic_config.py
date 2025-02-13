@@ -7,7 +7,7 @@ class GeneticConfig:
     population_size: int = 10
     gene_length: int = 10
 
-    elite_percent: float = 0.2
+    elite_percent: float = 0.2   # 20%
     padding_percent: float = 0.2
 
     mutation_rate: float = 0.01

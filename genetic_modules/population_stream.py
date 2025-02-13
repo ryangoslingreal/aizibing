@@ -24,7 +24,7 @@ class PopulationStream:
             gene = tuple(rand.choice([True, False]) for _ in range(config.gene_length))
             self.population.add_gene(gene)
 
-        return self.get()
+        return self.population
 
         # loop thru and compute gene using config etc - just use create_Gene for now... this func uses its own rand - need to link to other
         #for _ in range(self.config.population_size):
@@ -33,9 +33,9 @@ class PopulationStream:
     #def    # function that 'adds' multiple preprocessing functions into 'queue'? 
 
     class Population:
-        def __init__(self, stream): # can't give 'stream' type here. need to forward declare
+        def __init__(self, stream, genes = None): # can't give 'stream' type here. need to forward declare , pass genes through
             self.stream = stream
-            self.genes: List[Gene] = []
+            self.genes: List[Gene] = genes if genes != None else []
 
         # pass through length of genes
         def __len__(self):
@@ -44,12 +44,15 @@ class PopulationStream:
         # passes through self.genes
         def __getitem__(self, index):
             if isinstance(index, slice):
-                return self.__class__(self.stream, self.genes[index])
+                return self.__class__(self.stream, self.genes[index]) #causes error
             return self.genes[index]
         
         # allow iteration via self.genes e.g (for gene in population: )
         def __iter__(self):
             return iter(self.genes)
+        
+        def __str__(self):
+            return str((self.genes))
 
         def add_gene(self, gene: Gene):
             # add config checks here? 
