@@ -9,11 +9,12 @@ class GeneticSystem:
     def __init__(self, config: GeneticConfig, population_stream: PopulationStream, fitness_function: FitnessFunction):
         self.config = config
         self.fitness_function = fitness_function
-        self.population_stream = population_stream
+        self.stream = population_stream
 
         self.rand = random.Random(config.seed) # either pass rand thru or initialise here ? surely here is better - but just means things can't be passed thru that use rand... maybe can pass rand as a param there
 
-        population_stream.initialise(config, fitness_function, self.rand)
+        # initialise population
+        self.population = population_stream.initialise(config, fitness_function, self.rand)
 
         self.elite_threshold = int(config.population_size * config.elite_percent)
         self.padding_threshold = config.population_size - int(config.population_size * config.padding_percent)

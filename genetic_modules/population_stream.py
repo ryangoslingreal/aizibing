@@ -24,6 +24,8 @@ class PopulationStream:
             gene = tuple(rand.choice([True, False]) for _ in range(config.gene_length))
             self.population.add_gene(gene)
 
+        return self.get()
+
         # loop thru and compute gene using config etc - just use create_Gene for now... this func uses its own rand - need to link to other
         #for _ in range(self.config.population_size):
         #    gene = []
@@ -33,14 +35,27 @@ class PopulationStream:
     class Population:
         def __init__(self, stream): # can't give 'stream' type here. need to forward declare
             self.stream = stream
-
             self.genes: List[Gene] = []
+
+        # pass through length of genes
+        def __len__(self):
+            return len(self.genes)
+
+        # passes through self.genes
+        def __getitem__(self, index):
+            if isinstance(index, slice):
+                return self.__class__(self.stream, self.genes[index])
+            return self.genes[index]
+        
+        # allow iteration via self.genes e.g (for gene in population: )
+        def __iter__(self):
+            return iter(self.genes)
 
         def add_gene(self, gene: Gene):
             # add config checks here? 
             self.genes.append(gene)
 
-        def sort(self): # implement this - find out how to connect fitness_function in a non-ugly way 
+        def sort(self): # check for fitness_function ? 
             self.genes.sort(key=lambda g: self.stream.fitness_function.calculate(g), reverse=self.stream.config.maximize_fitness)
 
         # find 'hamming distance' (diversity of population) --- basically exploration vs exploitation --- to reduce computation, 'sample' population to get rough estimate of diversity ... target a certain value of diversity
