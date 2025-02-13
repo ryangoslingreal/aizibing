@@ -42,6 +42,8 @@ class GeneticAlgorithm():
             print(f"Position {i}: {individual}    Fitness: {fitness}")
         
         # TODO: Roulette wheel selection
+        # TODO: Apply crossover
+        # TODO: Apply mutation
     
     def pad_population(self):
         """Ensures the population remains at self.pop by adding new individuals if necessary."""
