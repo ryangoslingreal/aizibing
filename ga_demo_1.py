@@ -8,15 +8,15 @@ iris = datasets.load_iris()
 breast_cancer = datasets.load_breast_cancer()
 
 class GeneticAlgorithm():
-    def __init__(self, data, gen, pop, rep, fold, elite, padding, mutation_rate):
+    def __init__(self, data, gen, pop, rep, fold, elite_rate, padding_rate, mutation_rate):
         """Initializes the genetic algorithm with population-based feature selection."""
         self.data = data
         self.gen = gen
         self.pop = pop
         self.rep = rep
         self.fold = fold
-        self.elite = int(elite * pop)
-        self.padding = int(padding * pop)
+        self.elite_rate = elite_rate
+        self.padding_rate = padding_rate
         self.mutation_rate = mutation_rate
         
         # Preprocess dataset
@@ -75,7 +75,7 @@ class GeneticAlgorithm():
                 
             # Calculate average fitness across all reps
             fitness_scores[i] = np.mean(rep_fitness)
-            print(f"Individual {i}: {individual}    Fitness: {fitness_scores[i]}")
+            #print(f"Individual {i}: {individual}    Fitness: {fitness_scores[i]}")
         
         return fitness_scores
     
@@ -138,6 +138,6 @@ ga = GeneticAlgorithm(data=iris,
                       pop=10, 
                       rep=5, 
                       fold=5, 
-                      elite=0.05, 
-                      padding=0.05, 
+                      elite_rate=0.05, 
+                      padding_rate=0.05, 
                       mutation_rate=0.01)
