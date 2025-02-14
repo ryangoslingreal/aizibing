@@ -24,17 +24,33 @@ class GeneticSystem:
 
     def step(self):
         genes = self.population.get()
-
         new_genes = genes[:self.elite_threshold] # copies elite genes over
         
-        #for _ in range(self.elite_threshold, self.padding_threshold):
-        #    print(_)
+        for _ in range(self.elite_threshold, self.padding_threshold):
+            # perform selection
+            p1, p2 = self.rand.choices(genes, k=2)
+            #print(p1, p2)
 
-        new_genes[self.elite_threshold:] = [(5, 2)]
+            # perform crossover
+            crossover_point = self.rand.randint(0,self.config.gene_length)
+            child = p1[:crossover_point] + p2[crossover_point:] # okay python is pretty cool
+
+            new_genes.append(child)
+
+        #for _ in range(self.padding_threshold, self.config.population_size):
+        #    new_genes.append(self.stream.random_gene())
+
+        new_genes[self.padding_threshold:self.config.population_size] = [self.stream.random_gene()]
 
 
-        print(new_genes)
+        # demo code show how slice work
+        # new_genes[self.elite_threshold:] = [(1, 2) for _ in range(self.elite_threshold, self.padding_threshold)]
+
+        # ^^^ i want to potentially simplify this code 
+
+        #print(new_genes)
         self.population.set_genes(new_genes)
+        self.population.sort()
 
     
 

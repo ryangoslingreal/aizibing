@@ -15,14 +15,17 @@ class PopulationStream:
     def __init__(self, create_gene = None):
         self.population = self.Population(self)
 
+    def random_gene(self):
+        return tuple(self.rand.choice([True, False]) for _ in range(self.config.gene_length))
+
     def initialise(self, config, fitness_function, rand):
         self.config = config
         self.fitness_function = fitness_function
+        self.rand = rand
 
         # generate genes randomly
         for _ in range (config.population_size):
-            gene = tuple(rand.choice([True, False]) for _ in range(config.gene_length))
-            self.population.add_gene(gene)
+            self.population.add_gene(self.random_gene())
 
         return self.population
 

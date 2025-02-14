@@ -14,4 +14,4 @@ class GeneticConfig:
     
     maximize_fitness: bool = True
 
-    seed = None
+    seed: int = None

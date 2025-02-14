@@ -18,6 +18,7 @@ class SelectionStrategy(ABC):
         pass
 
 
+# p1, p2 = self.rand.choices(genes, k=2) ... also population shouldnt be passed thru these funcs, maybe implement k=1 default val
 class RandomSelection(SelectionStrategy):
     def select(self, population: List[Gene]) -> Gene:
         return self.rng.choice(population)
