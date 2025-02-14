@@ -2,7 +2,7 @@ from typing import Tuple, List
 
 from genetic_modules.fitness_function import FitnessFunction
 
-Gene = Tuple[bool, ...]
+Gene = Tuple[bool, ...] # in future, create a Gene class (for more customisation)
 
 # define get_population, update population etc... 
 # basically, this class handles dataset input, preprocess (folding)
@@ -26,9 +26,6 @@ class PopulationStream:
 
         return self.population
 
-        # loop thru and compute gene using config etc - just use create_Gene for now... this func uses its own rand - need to link to other
-        #for _ in range(self.config.population_size):
-        #    gene = []
 
     #def    # function that 'adds' multiple preprocessing functions into 'queue'? 
 
@@ -43,16 +40,21 @@ class PopulationStream:
 
         # passes through self.genes
         def __getitem__(self, index):
-            if isinstance(index, slice):
-                return self.__class__(self.stream, self.genes[index]) #causes error
+            if isinstance(index, slice): # kinda hacky, could this possibly result in a mem leak?
+                return self.__class__(self.stream, self.genes[index])
+            
             return self.genes[index]
+        
+        # allows genes to be set
+        def __setitem__(self, key, value):
+            self.genes[key]=value
         
         # allow iteration via self.genes e.g (for gene in population: )
         def __iter__(self):
             return iter(self.genes)
         
         def __str__(self):
-            return str((self.genes))
+            return str(self.genes)
 
         def add_gene(self, gene: Gene):
             # add config checks here? 
