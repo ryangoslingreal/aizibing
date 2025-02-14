@@ -10,23 +10,28 @@ Gene = Tuple[bool, ...]
 # pass datapipe in from init ?, so can get population piped in without having to pass it every call
 
 class SelectionStrategy(ABC):
-    def __init__(self, config: GeneticConfig, rng: random.Random): # pass PopStream thru here
-        self.rng = rng
+    def __init__(self):
+        pass
+
+    def initialise(self, stream):
+        self.stream = stream
+        self.population = stream.get()
+        self.config = stream.config
+        self.rand = stream.rand
 
     @abstractmethod
-    def select(self, population: List[Gene]) -> Gene:
+    def select(self) -> Gene:
         pass
 
 
-# p1, p2 = self.rand.choices(genes, k=2) ... also population shouldnt be passed thru these funcs, maybe implement k=1 default val
 class RandomSelection(SelectionStrategy):
-    def select(self, population: List[Gene]) -> Gene:
-        return self.rng.choice(population)
+    def select(self) -> Gene:
+        return self.rand.choice(self.population.get())
 
 
 class TournamentSelection(SelectionStrategy):
     def select(self, population: List[Gene]) -> Gene:
-        return self.rng.choice(population)
+        return self.rand.choice(population)
 
 
 class RouletteSelection(SelectionStrategy):

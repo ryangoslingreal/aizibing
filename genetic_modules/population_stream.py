@@ -23,10 +23,11 @@ class PopulationStream:
         self.fitness_function = fitness_function
         self.rand = rand
 
-        # generate genes randomly
+        # generate genes randomly - may need to pass this as a param
         for _ in range (config.population_size):
             self.population.add_gene(self.random_gene())
 
+        self.population.sort()
         return self.population
 
 

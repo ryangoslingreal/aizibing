@@ -23,6 +23,15 @@ class DemoFitnessFunction(FitnessFunction):
         return sum(gene)
     
 
+class CustomFitnessFunction(FitnessFunction):
+    def __init__(self, fitness_function):
+        self.fitness_function = fitness_function
+    
+    def _calculate(self, gene):
+        return self.fitness_function(gene)
+
+    
+
 # instead of making multiple different classes here,
 # how about just one class, which, __init__ is given the fitness function from notebook, then calculate (being cached) just calls that
 
