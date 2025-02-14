@@ -23,16 +23,18 @@ class GeneticSystem:
 
 
     def step(self):
-        new_population = self.population.get()[:self.elite_threshold] # copies elite genes over
+        genes = self.population.get()
+
+        new_genes = genes[:self.elite_threshold] # copies elite genes over
         
         #for _ in range(self.elite_threshold, self.padding_threshold):
         #    print(_)
 
-        new_population[self.elite_threshold:] = [(5, 2)]
+        new_genes[self.elite_threshold:] = [(5, 2)]
 
 
-        print(new_population)
-        #self.population = new_population
+        print(new_genes)
+        self.population.set_genes(new_genes)
 
     
 

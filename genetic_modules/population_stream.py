@@ -30,31 +30,12 @@ class PopulationStream:
     #def    # function that 'adds' multiple preprocessing functions into 'queue'? 
 
     class Population:
-        def __init__(self, stream, genes = None): # can't give 'stream' type here. need to forward declare , pass genes through
+        def __init__(self, stream): # can't give 'stream' type here. need to forward declare , pass genes through
             self.stream = stream
-            self.genes: List[Gene] = genes if genes != None else []
+            self.genes: List[Gene] = []
 
-        # pass through length of genes
-        def __len__(self):
-            return len(self.genes)
-
-        # passes through self.genes
-        def __getitem__(self, index):
-            if isinstance(index, slice): # kinda hacky, could this possibly result in a mem leak?
-                return self.__class__(self.stream, self.genes[index])
-            
-            return self.genes[index]
-        
-        # allows genes to be set
-        def __setitem__(self, key, value):
-            self.genes[key]=value
-        
-        # allow iteration via self.genes e.g (for gene in population: )
-        def __iter__(self):
-            return iter(self.genes)
-        
-        def __str__(self):
-            return str(self.genes)
+        def set_genes(self, genes: List[Gene]):
+            self.genes = genes
 
         def add_gene(self, gene: Gene):
             # add config checks here? 
