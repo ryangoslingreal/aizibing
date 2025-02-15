@@ -15,3 +15,6 @@ class GeneticConfig:
     maximize_fitness: bool = True
 
     seed: int = None
+
+    # TournamentSelection rounds
+    tournament_rounds: int = 5 # number of tournaments in selection

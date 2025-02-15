@@ -9,13 +9,13 @@ import random
 class GeneticSystem:
     def __init__(self, config: GeneticConfig, fitness_function: FitnessFunction, selection_strategy: SelectionStrategy, population_stream: PopulationStream = PopulationStream()):
         self.config = config
-        self.fitness_function = fitness_function
+        self.fitness_function = fitness_function.calculate
         self.stream = population_stream
 
         self.rand = random.Random(config.seed)
 
         # initialise population
-        self.population = population_stream.initialise(config, fitness_function, self.rand)
+        self.population = population_stream.initialise(config, fitness_function.calculate, self.rand)
 
         # initialise chosen selection strategy
         selection_strategy.initialise(population_stream)
@@ -39,13 +39,14 @@ class GeneticSystem:
             crossover_point = self.rand.randint(0,self.config.gene_length)
             child = p1[:crossover_point] + p2[crossover_point:] # okay python is pretty cool
 
+
             new_genes.append(child)
 
         # pad genes
         new_genes[self.padding_threshold:self.config.population_size] = [self.stream.random_gene()]
 
         self.population.set_genes(new_genes)
-        self.population.sort()
+        self.population.sort() # sorting at end confirms fitness is cached (and at end of train, pop is sorted.)
 
 
     def train(self, n_generations):

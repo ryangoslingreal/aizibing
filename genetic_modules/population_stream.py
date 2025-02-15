@@ -46,7 +46,7 @@ class PopulationStream:
             self.genes.append(gene)
 
         def sort(self): # check for fitness_function ? 
-            self.genes.sort(key=lambda g: self.stream.fitness_function.calculate(g), reverse=self.stream.config.maximize_fitness)
+            self.genes.sort(key=lambda g: self.stream.fitness_function(g), reverse=self.stream.config.maximize_fitness)
 
         # find 'hamming distance' (diversity of population) --- basically exploration vs exploitation --- to reduce computation, 'sample' population to get rough estimate of diversity ... target a certain value of diversity
         # def diversity(self):

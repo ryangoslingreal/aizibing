@@ -18,6 +18,7 @@ class SelectionStrategy(ABC):
         self.population = stream.get()
         self.config = stream.config
         self.rand = stream.rand
+        self.fitness = stream.fitness_function
 
     @abstractmethod
     def select(self) -> Gene:
@@ -29,15 +30,49 @@ class RandomSelection(SelectionStrategy):
         return self.rand.choice(self.population.get())
 
 
+
 class TournamentSelection(SelectionStrategy):
-    def select(self, population: List[Gene]) -> Gene:
-        return self.rand.choice(population)
+    def select(self) -> Gene:
+        genes = self.population.get()
+
+        champ = self.rand.choice(genes)
+
+        for _ in range(self.config.tournament_rounds):
+            contender = self.rand.choice(genes)
+
+            if self.fitness(contender) > self.fitness(champ):
+                champ = contender
+
+        return champ
+
 
 
 class RouletteSelection(SelectionStrategy):
-    def select(self, population: List[Gene]) -> Gene:
+    def select(self) -> Gene:
+        genes = self.population.get()
+
+        total_score = sum(self.fitness(gene) for gene in genes)
+
+        threshold = self.rand.uniform(0, total_score)
+
+        fitness = 0
+        for gene in genes:
+            fitness += self.fitness(gene)
+            if fitness >= threshold:
+                return gene
+            
+        return None # shouldn't ever happen
+
+
+
+class StochasticUniversalSampling(SelectionStrategy):
+    def select(self) -> Gene:
         pass
 
+
+# implement: 
+# https://en.wikipedia.org/wiki/Selection_(evolutionary_algorithm)
+# https://en.wikipedia.org/wiki/Reward-based_selection
     
 
 # here defining specific selection methods is okay
