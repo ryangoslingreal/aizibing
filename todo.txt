@@ -1,0 +1,21 @@
+AIzibing
+	-ga
+	
+	-config
+
+	-fitness func
+		-NB
+	-selection
+		-roulette
+		-truncation
+		-tournament
+		-stochastic universal sampling <-- SUS
+	-crossover
+		-splice
+		-proportional
+	-mutation
+		-shuffle
+		-random
+		-flip
+
+	-

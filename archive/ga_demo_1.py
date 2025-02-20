@@ -104,7 +104,7 @@ class GeneticAlgorithm():
     def roulette_wheel_selection(self):
         """Selects an individual using roulette wheel selection (fitness-proportionate)."""         
         total_fitness = sum(self.fitness_scores)
-        selection_probs = [fitness / total_fitness for fitness in self.fitness_scores]  # Normalize probabilities
+        selection_probs = [fitness / total_fitness for fitness in self.fitness_scores]
     
         return self.population[np.random.choice(len(self.population), p=selection_probs)]     
     
