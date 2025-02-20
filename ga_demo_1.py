@@ -96,12 +96,19 @@ class GeneticAlgorithm():
         self.population = [self.population[i] for i in sorted_indices]
         self.fitness_scores = [self.fitness_scores[i] for i in sorted_indices]
             
-    def crossover(self, parent1, parent2):
+    def roulette_wheel_selection(self):
+        """Selects an individual using roulette wheel selection (fitness-proportionate)."""         
+        total_fitness = sum(self.fitness_scores)
+        selection_probs = [fitness / total_fitness for fitness in self.fitness_scores]  # Normalize probabilities
+    
+        return self.population[np.random.choice(len(self.population), p=selection_probs)]     
+    
+    def crossover(self, parent1, parent2, type):
         """Performs crossover between two parents and returns offspring."""
         # TODO
         pass
     
-    def mutate(self, individual, mutation_rate):
+    def mutate(self, individual, type, mutation_rate):
         """Mutates an individual with a given mutation rate."""
         # TODO
         pass
