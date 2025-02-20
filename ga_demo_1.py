@@ -41,9 +41,14 @@ class GeneticAlgorithm():
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
         
-        # TODO: Roulette wheel selection
-        # TODO: Apply crossover
-        # TODO: Apply mutation
+        # TODO: Roulette wheel selection *
+        # TODO: Truncation selection
+        # TODO: Tournament selection
+        # TODO: Stochastic Universal Sampling selection
+        # TODO: Splice crossover *
+        # TODO: Proportional crossover
+        # TODO: Shuffle mutation *
+        # TODO: Random mutation
     
     def pad_population(self):
         """Ensures the population remains at self.pop by adding new individuals if necessary."""
