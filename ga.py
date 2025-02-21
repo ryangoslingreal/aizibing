@@ -11,6 +11,14 @@ breast_cancer = datasets.load_breast_cancer()
 
 from config import *
 
+# Custom Decorator function
+def list_to_tuple(function):
+    def wrapper(*args):
+        args = [tuple(x) if isinstance(x, list) else x for x in args]
+        result = function(*args)
+        result = tuple(result) if isinstance(result, list) else result
+        return result
+    return wrapper
 
 class GeneticAlgorithm():
     def __init__(self, data, gen, pop, rep, fold, elite_rate, padding_rate, mutation_rate):
@@ -60,6 +68,7 @@ class GeneticAlgorithm():
         
         return fitness_scores
     
+    @list_to_tuple
     @cache
     def rep_individual(self, individual):
         rep_fitness = []
