@@ -46,7 +46,7 @@ class GeneticAlgorithm():
         difference = self.pop - len(self.population)
         if difference > 0:
             self.population += self.generateIndividuals(difference, self.attributes)
-    
+
     def evaluate_population(self):
         """Evaluates fitness for each individual in the population."""
         fitness_scores = np.zeros(self.pop)
@@ -74,12 +74,21 @@ class GeneticAlgorithm():
                 
             # Calculate average fitness across all folds
             rep_fitness.append(np.mean(fold_fitness))
-            
+
         # Calculate average fitness across all reps
-        fitness_scores[i] = np.mean(rep_fitness)
-        #print(f"Individual {i}: {individual}    Fitness: {fitness_scores[i]}")
-        
-        return fitness_scores
+        return np.mean(rep_fitness)
+    
+    @cache
+    def evaluate_individual(self, selected_attributes, train_idx, test_idx):
+        """Trains and evaluates an individual using GaussianNB."""
+        # Apply attribute mask
+        X_train, X_test = self.X[train_idx][:, selected_attributes], self.X[test_idx][:, selected_attributes]
+        y_train, y_test = self.y[train_idx], self.y[test_idx]
+                    
+        # Train
+        nb = GaussianNB()
+        nb.fit(X_train, y_train)
+        return nb.score(X_test, y_test)
     
     @staticmethod
     def generateIndividuals(count, attributes):
