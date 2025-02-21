@@ -1,3 +1,4 @@
+from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
 import random
@@ -73,10 +74,13 @@ class GeneticAlgorithm():
                 
             # Calculate average fitness across all folds
             rep_fitness.append(np.mean(fold_fitness))
-
-        return np.mean(rep_fitness)
+            
+        # Calculate average fitness across all reps
+        fitness_scores[i] = np.mean(rep_fitness)
+        #print(f"Individual {i}: {individual}    Fitness: {fitness_scores[i]}")
+        
+        return fitness_scores
     
-
     @staticmethod
     def generateIndividuals(count, attributes):
         """Generates a specified number of random individuals."""
