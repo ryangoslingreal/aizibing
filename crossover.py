@@ -5,7 +5,7 @@ def splice_crossover(parent1, parent2):
     """Performs splice crossover between two parents and returns offspring."""
     # cut length = to 30% of the parent
     # TODO
-    cut_length = len(parent1) * .3
+    cut_length = round(len(parent1) * .3)
     start_index = random.randint(0, len(parent1) - cut_length)
     end_index = start_index + cut_length
 
