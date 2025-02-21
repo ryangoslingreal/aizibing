@@ -1,4 +1,3 @@
-from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
 import random
@@ -72,17 +71,6 @@ class GeneticAlgorithm():
             #print(f"Individual {i}: {individual}    Fitness: {fitness_scores[i]}")
         
         return fitness_scores
-    
-    def evaluate_individual(self, selected_attributes, train_idx, test_idx):
-        """Trains and evaluates an individual using GaussianNB."""
-        # Apply attribute mask
-        X_train, X_test = self.X[train_idx][:, selected_attributes], self.X[test_idx][:, selected_attributes]
-        y_train, y_test = self.y[train_idx], self.y[test_idx]
-                    
-        # Train
-        nb = GaussianNB()
-        nb.fit(X_train, y_train)
-        return nb.score(X_test, y_test)
     
     @staticmethod
     def generateIndividuals(count, attributes):
