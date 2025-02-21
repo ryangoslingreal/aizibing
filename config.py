@@ -1,12 +1,14 @@
 import selection
 import crossover
 import mutation
+import fitness
 
 PARAMS = {
     # GA methods
     "SELECTION": selection.roulette_wheel_selection,
     "CROSSOVER": crossover.splice_crossover,
     "MUTATION": mutation.random_mutate,
+    "FITNESS": fitness.gaussian_nb,
 
 
     # GA Properties

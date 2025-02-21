@@ -9,6 +9,9 @@ from sklearn import datasets
 iris = datasets.load_iris()
 breast_cancer = datasets.load_breast_cancer()
 
+from config import *
+
+
 class GeneticAlgorithm():
     def __init__(self, data, gen, pop, rep, fold, elite_rate, padding_rate, mutation_rate):
         """Initializes the genetic algorithm with population-based feature selection."""
@@ -86,9 +89,7 @@ class GeneticAlgorithm():
         y_train, y_test = self.y[train_idx], self.y[test_idx]
                     
         # Train
-        nb = GaussianNB()
-        nb.fit(X_train, y_train)
-        return nb.score(X_test, y_test)
+        return PARAMS["FITNESS"](X_train, y_train, X_test, y_test)
     
     @staticmethod
     def generateIndividuals(count, attributes):
@@ -117,11 +118,13 @@ class GeneticAlgorithm():
             
         return rep_folds
             
-ga = GeneticAlgorithm(data=iris, 
-                      gen=1, 
-                      pop=10, 
-                      rep=5, 
-                      fold=5, 
-                      elite_rate=0.05, 
-                      padding_rate=0.05, 
-                      mutation_rate=0.01)
+#ga = GeneticAlgorithm(data=iris, 
+#                      gen=1, 
+#                      pop=10, 
+#                      rep=5, 
+#                      fold=5, 
+#                      elite_rate=0.05, 
+#                      padding_rate=0.05, 
+#                      mutation_rate=0.01)
+
+print(PARAMS)
