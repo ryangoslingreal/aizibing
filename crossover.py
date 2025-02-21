@@ -1,6 +1,5 @@
 from random import random
 
-
 def splice_crossover(parent1, parent2):
     """Performs splice crossover between two parents and returns offspring."""
     # cut length = to 30% of the parent

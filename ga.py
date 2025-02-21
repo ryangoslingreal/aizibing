@@ -1,4 +1,3 @@
-from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
 import random
