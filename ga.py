@@ -118,13 +118,11 @@ class GeneticAlgorithm():
             
         return rep_folds
             
-#ga = GeneticAlgorithm(data=iris, 
-#                      gen=1, 
-#                      pop=10, 
-#                      rep=5, 
-#                      fold=5, 
-#                      elite_rate=0.05, 
-#                      padding_rate=0.05, 
-#                      mutation_rate=0.01)
-
-print(PARAMS)
+ga = GeneticAlgorithm(data=iris, 
+                      gen=1, 
+                      pop=10, 
+                      rep=5, 
+                      fold=5, 
+                      elite_rate=0.05, 
+                      padding_rate=0.05, 
+                      mutation_rate=0.01)
