@@ -2,6 +2,8 @@ from sklearn.model_selection import StratifiedKFold
 import numpy as np
 import random
 
+from functools import cache
+
 from sklearn import datasets
 iris = datasets.load_iris()
 breast_cancer = datasets.load_breast_cancer()
@@ -50,28 +52,31 @@ class GeneticAlgorithm():
         
         # Individual loop
         for i, individual in enumerate(self.population):
-            rep_fitness = []
-            
-            # Attribute mask
-            selected_attributes = np.array(individual, dtype=bool)
-            
-            # Rep loop
-            for r in self.rep_folds:
-                # Fold loop
-                fold_fitness = [
-                    self.evaluate_individual(selected_attributes, train_idx, test_idx)
-                    for train_idx, test_idx in self.rep_folds[r]
-                ]
-                    
-                # Calculate average fitness across all folds
-                rep_fitness.append(np.mean(fold_fitness))
-                
-            # Calculate average fitness across all reps
-            fitness_scores[i] = np.mean(rep_fitness)
-            #print(f"Individual {i}: {individual}    Fitness: {fitness_scores[i]}")
+            fitness_scores[i] = self.rep_individual(individual)
         
         return fitness_scores
     
+    @cache
+    def rep_individual(self, individual):
+        rep_fitness = []
+            
+        # Attribute mask
+        selected_attributes = np.array(individual, dtype=bool)
+        
+        # Rep loop
+        for r in self.rep_folds:
+            # Fold loop
+            fold_fitness = [
+                self.evaluate_individual(selected_attributes, train_idx, test_idx)
+                for train_idx, test_idx in self.rep_folds[r]
+            ]
+                
+            # Calculate average fitness across all folds
+            rep_fitness.append(np.mean(fold_fitness))
+
+        return np.mean(rep_fitness)
+    
+
     @staticmethod
     def generateIndividuals(count, attributes):
         """Generates a specified number of random individuals."""

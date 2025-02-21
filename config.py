@@ -16,5 +16,5 @@ PARAMS = {
 
 
     # Selection Properties
-    "TOURNAMENT_ROUNDS": 5
+    "TOURNAMENT_ROUNDS": 5,
 }
