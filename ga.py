@@ -49,8 +49,16 @@ class GeneticAlgorithm():
         
         self.fitness_scores = self.evaluate_population()
 
+        self.sort_population()
+
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
+
+    def sort_population(self):
+        """Sorts population by fitness scores."""
+        sorted_indices = np.argsort(self.fitness_scores)[::-1]
+        self.population = [self.population[i] for i in sorted_indices]
+        self.fitness_scores = [self.fitness_scores[i] for i in sorted_indices]
     
     def pad_population(self):
         """Ensures the population remains at self.pop by adding new individuals if necessary."""
@@ -72,15 +80,12 @@ class GeneticAlgorithm():
     @cache
     def rep_individual(self, individual):
         rep_fitness = []
-            
-        # Attribute mask
-        selected_attributes = np.array(individual, dtype=bool)
         
         # Rep loop
         for r in self.rep_folds:
             # Fold loop
             fold_fitness = [
-                self.evaluate_individual(selected_attributes, train_idx, test_idx)
+                self.evaluate_individual(individual, train_idx, test_idx)
                 for train_idx, test_idx in self.rep_folds[r]
             ]
                 
@@ -90,8 +95,10 @@ class GeneticAlgorithm():
         # Calculate average fitness across all reps
         return np.mean(rep_fitness)
     
-    @cache
-    def evaluate_individual(self, selected_attributes, train_idx, test_idx):
+    def evaluate_individual(self, individual, train_idx, test_idx):
+        # Attribute mask
+        selected_attributes = np.array(individual, dtype=bool)
+
         """Trains and evaluates an individual using GaussianNB."""
         # Apply attribute mask
         X_train, X_test = self.X[train_idx][:, selected_attributes], self.X[test_idx][:, selected_attributes]
@@ -127,13 +134,12 @@ class GeneticAlgorithm():
             
         return rep_folds
             
-#ga = GeneticAlgorithm(data=iris, 
-#                      gen=1, 
-#                      pop=10, 
-#                      rep=5, 
-#                      fold=5, 
-#                      elite_rate=0.05, 
-#                      padding_rate=0.05, 
-#                      mutation_rate=0.01)
+ga = GeneticAlgorithm(data=breast_cancer, 
+                      gen=1, 
+                      pop=50, 
+                      rep=30, 
+                      fold=5, 
+                      elite_rate=0.05, 
+                      padding_rate=0.05, 
+                      mutation_rate=0.01)
 
-print(PARAMS)
