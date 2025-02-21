@@ -17,8 +17,6 @@ def splice_crossover(parent1, parent2):
 
     return child1, child2
 
-    pass
-
 def proportional_crossover(parent1, parent2):
     """Performs proportional crossover between two parents and returns offspring."""
     # TODO

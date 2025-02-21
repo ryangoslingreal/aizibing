@@ -11,36 +11,20 @@ breast_cancer = datasets.load_breast_cancer()
 
 from config import *
 
-# Custom Decorator function
-def list_to_tuple(function):
-    def wrapper(*args):
-        args = [tuple(x) if isinstance(x, list) else x for x in args]
-        result = function(*args)
-        result = tuple(result) if isinstance(result, list) else result
-        return result
-    return wrapper
-
 class GeneticAlgorithm():
-    def __init__(self, data, gen, pop, rep, fold, elite_rate, padding_rate, mutation_rate):
+    def __init__(self, data):
         """Initializes the genetic algorithm with population-based feature selection."""
         self.data = data
-        self.gen = gen
-        self.pop = pop
-        self.rep = rep
-        self.fold = fold
-        self.elite_rate = elite_rate
-        self.padding_rate = padding_rate
-        self.mutation_rate = mutation_rate
         
         # Preprocess dataset
         self.X, self.y = data.data, data.target
         self.attributes = self.X.shape[1]
-        self.rep_folds = self.generateNFolds(self.X, self.y, self.rep, self.fold)
+        self.rep_folds = self.generateNFolds(self.X, self.y, params.REPETITIONS, params.FOLDS)
         
         # Generate initial population
-        self.population = self.generateIndividuals(self.pop, self.attributes)
+        self.population = self.generateIndividuals(params.POPULATION, self.attributes)
         
-        for g in range(gen):
+        for g in range(params.GENERATIONS):
             print(f"\n--- Generation {g} ---")
             self.step()
         
@@ -62,13 +46,13 @@ class GeneticAlgorithm():
     
     def pad_population(self):
         """Ensures the population remains at self.pop by adding new individuals if necessary."""
-        difference = self.pop - len(self.population)
+        difference = params.POPULATION - len(self.population)
         if difference > 0:
             self.population += self.generateIndividuals(difference, self.attributes)
 
     def evaluate_population(self):
         """Evaluates fitness for each individual in the population."""
-        fitness_scores = np.zeros(self.pop)
+        fitness_scores = np.zeros(params.POPULATION)
         
         # Individual loop
         for i, individual in enumerate(self.population):
@@ -76,13 +60,12 @@ class GeneticAlgorithm():
         
         return fitness_scores
     
-    @list_to_tuple
     @cache
     def rep_individual(self, individual):
         rep_fitness = []
         
         # Rep loop
-        for r in self.rep_folds:
+        for r in range(params.REPETITIONS):
             # Fold loop
             fold_fitness = [
                 self.evaluate_individual(individual, train_idx, test_idx)
@@ -96,16 +79,13 @@ class GeneticAlgorithm():
         return np.mean(rep_fitness)
     
     def evaluate_individual(self, individual, train_idx, test_idx):
-        # Attribute mask
-        selected_attributes = np.array(individual, dtype=bool)
-
         """Trains and evaluates an individual using GaussianNB."""
         # Apply attribute mask
-        X_train, X_test = self.X[train_idx][:, selected_attributes], self.X[test_idx][:, selected_attributes]
+        X_train, X_test = self.X[train_idx][:, individual], self.X[test_idx][:, individual]
         y_train, y_test = self.y[train_idx], self.y[test_idx]
                     
         # Train
-        return PARAMS["FITNESS"](X_train, y_train, X_test, y_test)
+        return params.FITNESS(X_train, y_train, X_test, y_test)
     
     @staticmethod
     def generateIndividuals(count, attributes):
@@ -116,7 +96,7 @@ class GeneticAlgorithm():
             # Ensure individual is valid
             # If so, regenerate
             while True:
-                individual = [random.choice([True, False]) for _ in range(attributes)]
+                individual = tuple(random.choice([True, False]) for _ in range(attributes))
                 if any(individual):
                     break
             
@@ -128,19 +108,10 @@ class GeneticAlgorithm():
     def generateNFolds(X, y, rep, fold):
         """Generates stratified k-fold splits for cross-validation."""
         rep_folds = {}
-        for r in range(rep):
+        for r in range(params.REPETITIONS):
             skf = StratifiedKFold(n_splits=fold, shuffle=True, random_state=(42 + r))
             rep_folds[r] = list(skf.split(X, y))
             
         return rep_folds
             
-#ga = GeneticAlgorithm(data=iris, 
-#                      gen=1, 
-#                      pop=10, 
-#                      rep=5, 
-#                      fold=5, 
-#                      elite_rate=0.05, 
-#                      padding_rate=0.05, 
-#                      mutation_rate=0.01)
-
-print(PARAMS)
+ga = GeneticAlgorithm(data=iris)
