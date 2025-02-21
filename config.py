@@ -1,10 +1,12 @@
 import selection
 import crossover
+import mutation
 
 PARAMS = {
     # GA methods
     "SELECTION": selection.roulette_wheel_selection,
     "CROSSOVER": crossover.splice_crossover,
+    "MUTATION": mutation.random_mutate,
 
     # GA properties
     "ELITE_RATE": 0.2,
