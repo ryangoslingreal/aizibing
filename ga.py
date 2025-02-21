@@ -35,8 +35,6 @@ class GeneticAlgorithm():
         self.pad_population()
         
         self.fitness_scores = self.evaluate_population()
-        
-        self.sort_population()        
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
@@ -85,12 +83,6 @@ class GeneticAlgorithm():
         nb = GaussianNB()
         nb.fit(X_train, y_train)
         return nb.score(X_test, y_test)
-    
-    def sort_population(self):
-        """Sorts population by fitness scores."""
-        sorted_indices = np.argsort(self.fitness_scores)[::-1]
-        self.population = [self.population[i] for i in sorted_indices]
-        self.fitness_scores = [self.fitness_scores[i] for i in sorted_indices]
     
     @staticmethod
     def generateIndividuals(count, attributes):
