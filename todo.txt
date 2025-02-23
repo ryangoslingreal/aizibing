@@ -17,5 +17,3 @@ AIzibing
 		-shuffle
 		-random
 		-flip
-
-	-

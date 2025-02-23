@@ -22,9 +22,3 @@ def sus_selection(population, fitness_scores, n=1):
     """Selects `n` individuals using evenly spaced selection points across the fitness distribution."""
     # TODO
     pass
-
-def _sort_population(self):
-        """Sorts population by fitness scores."""
-        sorted_indices = np.argsort(self.fitness_scores)[::-1]
-        self.population = [self.population[i] for i in sorted_indices]
-        self.fitness_scores = [self.fitness_scores[i] for i in sorted_indices]
