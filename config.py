@@ -19,7 +19,7 @@ params = SimpleNamespace(
     REPETITIONS=30,
     FOLDS=5,
     ELITE_RATE=0.10,
-    PADDING_RATE=0.2,
+    PADDING_RATE=0.30,
     MUTATION_RATE=0.01,  # maybe implement 'variable mutation' via hamming distance?
 
     # Selection Properties
