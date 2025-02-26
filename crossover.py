@@ -17,10 +17,10 @@ def average_crossover(parent1, parent2):
     child = list()
 
     for pair in paired_parents:
-        if pair[0] == pair[1]:  # if both parents have the same gene, keep it
+        if pair[0] == pair[1]:  # if both parents have the same gene keep it
             child.append(pair[0])
         elif pair[0] != pair[1]:    # if parents have different genes, pick a choice at random
-            child.append(random.choice(pair))
+            child.append(random.choice(paired_parents))
 
     return child
 
