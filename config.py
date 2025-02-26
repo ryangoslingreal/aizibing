@@ -14,11 +14,11 @@ params = SimpleNamespace(
     FITNESS=fitness.gaussian_nb,
 
     # GA Properties
-    GENERATIONS=10,
-    POPULATION=10,
+    GENERATIONS=3,
+    POPULATION=5,
     REPETITIONS=30,
     FOLDS=5,
-    ELITE_RATE=0.10,
+    ELITE_RATE=0.05,
     PADDING_RATE=0.30,
     MUTATION_RATE=0.01,  # maybe implement 'variable mutation' via hamming distance?
 
