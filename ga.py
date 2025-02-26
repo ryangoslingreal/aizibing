@@ -29,13 +29,16 @@ class GeneticAlgorithm():
         
     def step(self):
         self.pad_population()
-        
+
         self.fitness_scores = self.evaluate_population()
 
         self.sort_population()
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
+
+    def evolve_generation(self):
+        kill_method = params.KILL_METHOD
 
     def sort_population(self):
         """Sorts population by fitness scores."""
@@ -113,4 +116,4 @@ class GeneticAlgorithm():
             
         return rep_folds
             
-ga = GeneticAlgorithm(data=iris)
+ga = GeneticAlgorithm(data=breast_cancer)

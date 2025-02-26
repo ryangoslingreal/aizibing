@@ -4,6 +4,7 @@ import selection
 import crossover
 import mutation
 import fitness
+import genocide
 
 params = SimpleNamespace(
     # GA Methods
@@ -13,17 +14,19 @@ params = SimpleNamespace(
     FITNESS=fitness.gaussian_nb,
 
     # GA Properties
-    GENERATIONS=1,
+    GENERATIONS=10,
     POPULATION=10,
     REPETITIONS=30,
     FOLDS=5,
-    ELITE_RATE=0.05,
+    ELITE_RATE=0.10,
     PADDING_RATE=0.2,
     MUTATION_RATE=0.01,  # maybe implement 'variable mutation' via hamming distance?
 
     # Selection Properties
     TOURNAMENT_ROUNDS=5,
 
+    # Genocide Methods
+    KILL_METHOD=genocide.elitism,
 
     # Mutation Properties
     ALLOW_CLONING=True,
