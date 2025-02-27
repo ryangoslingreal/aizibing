@@ -28,30 +28,14 @@ class GeneticAlgorithm():
             self.step()
         
     def step(self):
-        self.evolve_generation()
         self.pad_population()
-
+        
         self.fitness_scores = self.evaluate_population()
 
         self.sort_population()
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
-
-    def evolve_generation(self):
-        self.population = params.KILL_METHOD(self.population, params.ELITE_RATE)
-        difference = params.POPULATION - len(self.population)
-
-        if difference > 0:
-            padding_amount = round(params.POPULATION * params.PADDING_RATE)
-
-            for an_individual in range(difference - padding_amount):
-                parent1, parent2 = random.sample(self.population,2)  # randomly pick 2 parents from killed population
-                self.population += params.CROSSOVER(parent1, parent2)
-
-            self.pad_population() # pads rest of pop
-
-
 
     def sort_population(self):
         """Sorts population by fitness scores."""
@@ -129,4 +113,4 @@ class GeneticAlgorithm():
             
         return rep_folds
             
-ga = GeneticAlgorithm(data=breast_cancer)
+ga = GeneticAlgorithm(data=iris)
