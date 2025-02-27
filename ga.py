@@ -38,12 +38,7 @@ class GeneticAlgorithm():
             print(f"Position {i}: {individual}    Fitness: {fitness}")
 
     def evolve_generation(self):
-        self.population = params.KILL_METHOD(self.population)
-        difference = params.POPULATION - len(self.population)
-        if difference > 0:
-            parent1, parent2 = random.choice(self.population), random.choice(self.population) # randomly pick 2 parents from killed population
-            for an_individual in range(difference):
-                self.population += params.CROSSOVER(parent1, parent2)[random.choice]# picks 1 child in case a method returns multiple
+        kill_method = params.KILL_METHOD
 
     def sort_population(self):
         """Sorts population by fitness scores."""
