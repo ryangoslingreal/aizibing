@@ -39,18 +39,21 @@ class GeneticAlgorithm():
             print(f"Position {i}: {individual}    Fitness: {fitness}")
 
     def evolve_generation(self):
+        print(f"prekilling = {len(self.population)}")
         self.population = params.KILL_METHOD(self.population, params.ELITE_RATE)
+        print(f"afterkilling = {len(self.population)}")
         difference = params.POPULATION - len(self.population)
+        print(f"number of killed = {difference}")
 
         if difference > 0:
             padding_amount = round(params.POPULATION * params.PADDING_RATE)
+            print(f"padding_amount = {padding_amount}")
 
-            for an_individual in range(difference - padding_amount):
-                parent1, parent2 = random.sample(self.population,2)  # randomly pick 2 parents from killed population
-                self.population += params.CROSSOVER(parent1, parent2)
+            for an_individual in range(difference):
+                parent1, parent2 = random.choice(self.population), random.choice(self.population)  # randomly pick 2 parents from killed population
+                self.population += params.CROSSOVER(parent1, parent2)# picks 1 child in case a method returns multiple
 
-            self.pad_population() # pads rest of pop
-
+            self.population = self.population[-1:padding_amount]
 
 
     def sort_population(self):
