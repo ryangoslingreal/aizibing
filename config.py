@@ -13,9 +13,12 @@ params = SimpleNamespace(
     MUTATION=mutation.random_mutate,
     FITNESS=fitness.gaussian_nb,
 
+    # Genocide Methods
+    KILL_METHOD=genocide.elitism,
+
     # GA Properties
-    GENERATIONS=3,
-    POPULATION=5,
+    GENERATIONS=1,
+    POPULATION=10,
     REPETITIONS=30,
     FOLDS=5,
     ELITE_RATE=0.05,
@@ -24,9 +27,6 @@ params = SimpleNamespace(
 
     # Selection Properties
     TOURNAMENT_ROUNDS=5,
-
-    # Genocide Methods
-    KILL_METHOD=genocide.elitism,
 
     # Mutation Properties
     ALLOW_CLONING=True,
