@@ -39,16 +39,15 @@ class GeneticAlgorithm():
             print(f"Position {i}: {individual}    Fitness: {fitness}")
 
     def evolve_generation(self):
-        self.population = params.KILL_METHOD(self.population, params.ELITE_RATE)
+        self.population = params.KILL_METHOD(self.population)
         difference = params.POPULATION - len(self.population)
 
         if difference > 0:
-            padding_amount = round(params.POPULATION * params.PADDING_RATE)
+            padding_amount = round(len(params.POPULATION * params.PADDING_RATE))
+            parent1, parent2 = random.choice(self.population), random.choice(self.population) # randomly pick 2 parents from killed population
 
             for an_individual in range(difference):
-                parent1, parent2 = random.choice(self.population), random.choice(
-                    self.population)  # randomly pick 2 parents from killed population
-                self.population += params.CROSSOVER(parent1, parent2)# picks 1 child in case a method returns multiple
+                self.population += params.CROSSOVER(parent1, parent2)[random.choice]# picks 1 child in case a method returns multiple
 
             self.population = self.population[-1:padding_amount]
 
