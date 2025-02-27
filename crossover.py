@@ -2,7 +2,7 @@ import random
 
 def splice_crossover(parent1, parent2):
     """Performs splice crossover between two parents and returns offspring along with splicing details."""
-    cut_length = max(1,round(len(parent1) * 0.3))  # Ensure at least 1 element is swapped
+    cut_length = round(len(parent1) * 0.3)  # Ensure at least 1 element is swapped
     start_index = random.randint(0, len(parent1) - cut_length)
     end_index = start_index + cut_length
 
