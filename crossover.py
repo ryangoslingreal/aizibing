@@ -9,7 +9,8 @@ def splice_crossover(parent1, parent2):
     # Swap genetic material between parents
     child1 = parent1[:start_index] + parent2[start_index:end_index] + parent1[end_index:]
     child2 = parent2[:start_index] + parent1[start_index:end_index] + parent2[end_index:]
-    return child1, child2
+    children = [child1, child2]
+    return random.sample(children)
 
 def average_crossover(parent1, parent2):
     """Performs average crossover between two parents returning 1 offspring."""
