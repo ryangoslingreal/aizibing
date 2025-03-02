@@ -9,11 +9,11 @@ params = SimpleNamespace(
     # GA Methods
     SELECTION=selection.roulette_wheel_selection,
     CROSSOVER=crossover.splice_crossover,
-    MUTATION=mutation.random_mutate,
+    MUTATION=mutation.shuffle_mutate,
     FITNESS=fitness.gaussian_nb,
 
     # GA Properties
-    GENERATIONS=1,
+    GENERATIONS=2,
     POPULATION=10,
     REPETITIONS=30,
     FOLDS=5,

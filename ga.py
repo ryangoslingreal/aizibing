@@ -36,6 +36,52 @@ class GeneticAlgorithm():
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
+            
+        # Define crossover thresholds
+        elite_size = int(params.ELITE_RATE * params.POPULATION)
+        padding_size = int(params.PADDING_RATE * params.POPULATION)
+        breeding_size = params.POPULATION - elite_size - padding_size
+        
+        # Elite carry over
+        next_population = self.population[:elite_size]
+        
+        # Extract breeding population
+        breeding_pool = self.population[:elite_size + breeding_size]
+        breeding_pool_fitness = self.fitness_scores[:elite_size + breeding_size]
+        
+        # Until breeding threshold reached
+        while len(next_population) < elite_size + breeding_size:
+            # Choose two unique parents if ALLOW_CLONING = False
+            print("\nChoosing two parents...")
+            chosen = False
+            while not chosen:
+                parent1 = params.SELECTION(breeding_pool, breeding_pool_fitness)
+                parent2 = params.SELECTION(breeding_pool, breeding_pool_fitness)
+            
+                if params.ALLOW_CLONING or parent1 != parent2:
+                    chosen = True
+            
+            print("Chosen parents:")
+            print(parent1)
+            print(parent2)
+            
+            # If ALLOW_CLONING = True and MUTATE_ON_CLONE = True
+            if parent1 == parent2 and params.MUTATE_ON_CLONE:
+                print("Identical parents. Mutating...")
+                mutated_offspring = params.MUTATION(parent1)
+                print("Mutated offspring:")
+                print(mutated_offspring)
+                next_population.append(mutated_offspring)
+                continue
+            
+            # Otherwise, crossover
+            print("Performing crossover...")
+            print("Offspring:")
+            offspring = params.CROSSOVER(parent1, parent2)
+            print(offspring)
+            next_population.extend(offspring)
+                    
+        self.population = next_population
 
     def sort_population(self):
         """Sorts population by fitness scores."""
