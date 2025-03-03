@@ -53,13 +53,12 @@ class GeneticAlgorithm():
         while len(next_population) < elite_size + breeding_size:
             # Choose two unique parents if ALLOW_CLONING = False
             print("\nChoosing two parents...")
-            chosen = False
-            while not chosen:
+            while True:
                 parent1 = params.SELECTION(breeding_pool, breeding_pool_fitness)
                 parent2 = params.SELECTION(breeding_pool, breeding_pool_fitness)
             
                 if params.ALLOW_CLONING or parent1 != parent2:
-                    chosen = True
+                    break
             
             print("Chosen parents:")
             print(parent1)
@@ -68,16 +67,16 @@ class GeneticAlgorithm():
             # If ALLOW_CLONING = True and MUTATE_ON_CLONE = True
             if parent1 == parent2 and params.MUTATE_ON_CLONE:
                 print("Identical parents. Mutating...")
-                mutated_offspring = params.MUTATION(parent1)
                 print("Mutated offspring:")
+                mutated_offspring = self.verifyIndividuals(params.MUTATION(parent1))
                 print(mutated_offspring)
-                next_population.append(mutated_offspring)
+                next_population.extend(mutated_offspring)
                 continue
             
             # Otherwise, crossover
             print("Performing crossover...")
             print("Offspring:")
-            offspring = params.CROSSOVER(parent1, parent2)
+            offspring = self.verifyIndividuals(params.CROSSOVER(parent1, parent2))
             print(offspring)
             next_population.extend(offspring)
                     
@@ -101,7 +100,8 @@ class GeneticAlgorithm():
         
         # Individual loop
         for i, individual in enumerate(self.population):
-            fitness_scores[i] = self.rep_individual(individual)
+            # Convert to tuple for caching
+            fitness_scores[i] = self.rep_individual(tuple(individual))
         
         return fitness_scores
     
@@ -141,7 +141,7 @@ class GeneticAlgorithm():
             # Ensure individual is valid
             # If so, regenerate
             while True:
-                individual = tuple(random.choice([True, False]) for _ in range(attributes))
+                individual = [random.choice([True, False]) for _ in range(attributes)]
                 if any(individual):
                     break
             
@@ -158,5 +158,19 @@ class GeneticAlgorithm():
             rep_folds[r] = list(skf.split(X, y))
             
         return rep_folds
+    
+    @staticmethod
+    def verifyIndividuals(individuals):
+        """Ensures all individuals have at least one True value. If all False, randomly set one to True."""
+        fixed_individuals = []
+        
+        for individual in individuals:
+            if not any(individual):
+                random_index = random.randint(0, len(individual) - 1)
+                individual[random_index] = True
+
+            fixed_individuals.append(individual)
+
+        return fixed_individuals
             
 ga = GeneticAlgorithm(data=iris)

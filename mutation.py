@@ -4,7 +4,7 @@ def shuffle_mutate(individual):
     """Randomly shuffles the order of features in the individual."""
     ind = list(individual) 
     random.shuffle(ind)
-    return tuple(ind)
+    return [ind]
 
 
 def random_mutate(individual, n=1):
@@ -17,7 +17,7 @@ def random_mutate(individual, n=1):
         if (chance_of_mutation < mutationRate):
             ind[attribute] = not(attribute)
         
-    return tuple(ind)
+    return [ind]
 
 def flip_mutate(individual, n=1):
     """Selects two random features and swaps their states `n` times."""
@@ -34,4 +34,4 @@ def flip_mutate(individual, n=1):
         ind[attribute_1] = two
         ind[attribute_2] = one
         
-    return tuple(ind)
+    return [ind]
