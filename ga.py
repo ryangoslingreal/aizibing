@@ -20,6 +20,10 @@ class GeneticAlgorithm():
         self.attributes = self.X.shape[1]
         self.rep_folds = self.generateNFolds(self.X, self.y, params.REPETITIONS, params.FOLDS)
         
+        # Compute baseline fitness
+        baseline_fitness = self.rep_individual(tuple([True for _ in range(self.attributes)]))
+        print(f"Baseline fitness: {baseline_fitness}")
+        
         # Generate initial population
         self.population = self.generateIndividuals(params.POPULATION, self.attributes)
         
