@@ -19,7 +19,7 @@ class GeneticAlgorithm():
         # Define crossover thresholds
         self.elite_size = int(params.ELITE_RATE * params.POPULATION)
         self.padding_size = int(params.PADDING_RATE * params.POPULATION)
-        self.breeding_size = params.POPULATION - self.elite_size - self.padding_size
+        self.breeding_size = params.POPULATION - self.padding_size
         
         # Preprocess dataset
         self.X, self.y = data.data, data.target
@@ -45,21 +45,16 @@ class GeneticAlgorithm():
             print(f"Position {i}: {individual}    Fitness: {fitness}")
         
         # Extract breeding population
-        breeding_pool = self.population[:self.elite_size + self.breeding_size]
-        breeding_pool_fitness = self.fitness_scores[:self.elite_size + self.breeding_size]
+        breeding_pool = self.population[:self.breeding_size]
+        breeding_pool_fitness = self.fitness_scores[:self.breeding_size]
         
         next_population = []
         
         # Until breeding threshold reached
-        while len(next_population) < self.breeding_size:
+        while len(next_population) < self.breeding_size - self.elite_size:
             # Choose two unique parents if ALLOW_CLONING = False
             print("\nChoosing two parents...")
-            while True:
-                parent1 = params.SELECTION(breeding_pool, breeding_pool_fitness)
-                parent2 = params.SELECTION(breeding_pool, breeding_pool_fitness)
-            
-                if params.ALLOW_CLONING or parent1 != parent2:
-                    break
+            parent1, parent2 = params.SELECTION(breeding_pool, breeding_pool_fitness, params.ALLOW_CLONING)
             
             print("Chosen parents:")
             print(parent1)
