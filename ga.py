@@ -8,7 +8,7 @@ from sklearn import datasets
 iris = datasets.load_iris()
 breast_cancer = datasets.load_breast_cancer()
 
-from config import *
+from config import params
 
 class GeneticAlgorithm():
     def __init__(self, data):
