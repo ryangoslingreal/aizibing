@@ -46,15 +46,14 @@ class GeneticAlgorithm():
         padding_size = int(params.PADDING_RATE * params.POPULATION)
         breeding_size = params.POPULATION - elite_size - padding_size
         
-        # Elite carry over
-        next_population = self.population[:elite_size]
-        
         # Extract breeding population
         breeding_pool = self.population[:elite_size + breeding_size]
         breeding_pool_fitness = self.fitness_scores[:elite_size + breeding_size]
         
+        next_population = []
+        
         # Until breeding threshold reached
-        while len(next_population) < elite_size + breeding_size:
+        while len(next_population) < breeding_size:
             # Choose two unique parents if ALLOW_CLONING = False
             print("\nChoosing two parents...")
             while True:
@@ -72,9 +71,9 @@ class GeneticAlgorithm():
             if parent1 == parent2 and params.MUTATE_ON_CLONE:
                 print("Identical parents. Mutating...")
                 print("Mutated offspring:")
-                mutated_offspring = self.verifyIndividuals(params.MUTATION(parent1))
-                print(mutated_offspring)
-                next_population.extend(mutated_offspring)
+                mutated_offspring = self.verifyIndividuals(params.MUTATION(parent1))[0]
+                print(f"{parent1} -> {mutated_offspring}")
+                next_population.append(mutated_offspring)
                 continue
             
             # Otherwise, crossover
@@ -84,6 +83,23 @@ class GeneticAlgorithm():
             print(offspring)
             next_population.extend(offspring)
                     
+            # Apply basic mutation rate
+            for i, individual in enumerate(next_population):
+                # If no mutation, continue
+                if random.random() >= params.MUTATION_RATE:
+                    continue
+                
+                # Else, mutate
+                print("\nRandom mutation. Mutating...")
+                print("Mutated individual:")
+                new_individual = self.verifyIndividuals(params.MUTATION(individual))[0]
+                print(f"{individual} -> {new_individual}")
+                next_population[i] = new_individual
+                
+        # Elite carry over
+        next_population.extend(self.population[:elite_size])
+        
+        # Reset population for next generation cycle        
         self.population = next_population
 
     def sort_population(self):
