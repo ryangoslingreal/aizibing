@@ -14,6 +14,12 @@ class GeneticAlgorithm():
     def __init__(self, data):
         """Initializes the genetic algorithm with population-based feature selection."""
         self.data = data
+        self.population = []
+        
+        # Define crossover thresholds
+        self.elite_size = int(params.ELITE_RATE * params.POPULATION)
+        self.padding_size = int(params.PADDING_RATE * params.POPULATION)
+        self.breeding_size = params.POPULATION - self.elite_size - self.padding_size
         
         # Preprocess dataset
         self.X, self.y = data.data, data.target
@@ -23,9 +29,6 @@ class GeneticAlgorithm():
         # Compute baseline fitness
         baseline_fitness = self.rep_individual(tuple([True for _ in range(self.attributes)]))
         print(f"Baseline fitness: {baseline_fitness}")
-        
-        # Generate initial population
-        self.population = self.generateIndividuals(params.POPULATION, self.attributes)
         
         for g in range(params.GENERATIONS):
             print(f"\n--- Generation {g} ---")
@@ -40,20 +43,15 @@ class GeneticAlgorithm():
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
-            
-        # Define crossover thresholds
-        elite_size = int(params.ELITE_RATE * params.POPULATION)
-        padding_size = int(params.PADDING_RATE * params.POPULATION)
-        breeding_size = params.POPULATION - elite_size - padding_size
         
         # Extract breeding population
-        breeding_pool = self.population[:elite_size + breeding_size]
-        breeding_pool_fitness = self.fitness_scores[:elite_size + breeding_size]
+        breeding_pool = self.population[:self.elite_size + self.breeding_size]
+        breeding_pool_fitness = self.fitness_scores[:self.elite_size + self.breeding_size]
         
         next_population = []
         
         # Until breeding threshold reached
-        while len(next_population) < breeding_size:
+        while len(next_population) < self.breeding_size:
             # Choose two unique parents if ALLOW_CLONING = False
             print("\nChoosing two parents...")
             while True:
@@ -97,10 +95,11 @@ class GeneticAlgorithm():
                 next_population[i] = new_individual
                 
         # Elite carry over
-        next_population.extend(self.population[:elite_size])
+        next_population.extend(self.population[:self.elite_size])
         
         # Reset population for next generation cycle        
         self.population = next_population
+        self.fitness_scores = []
 
     def sort_population(self):
         """Sorts population by fitness scores."""
