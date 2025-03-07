@@ -5,12 +5,8 @@ def roulette_wheel_selection(population, fitness_scores, allow_cloning=True):
     total_fitness = sum(fitness_scores)
     selection_probs = [fitness / total_fitness for fitness in fitness_scores]
 
-    # Select two distinct parents
-    if allow_cloning:
-        parent_indices =  np.random.choice(len(population), size=2, p=selection_probs, replace=True)
-    else:
-        parent_indices = np.random.choice(len(population), size=2, p=selection_probs, replace=False)
-
+    # Select two parents
+    parent_indices =  np.random.choice(len(population), size=2, p=selection_probs, replace=allow_cloning)
     return population[parent_indices[0]], population[parent_indices[1]]
 
 def tournament_selection(population, fitness_scores, k=5, allow_cloning=True):
