@@ -9,7 +9,7 @@ params = SimpleNamespace(
     # GA Methods
     SELECTION=selection.roulette_wheel_selection,
     CROSSOVER=crossover.splice_crossover,
-    MUTATION=mutation.shuffle_mutate,
+    MUTATION=mutation.random_mutate,
     FITNESS=fitness.gaussian_nb,
 
     # GA Properties
