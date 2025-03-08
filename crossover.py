@@ -16,14 +16,11 @@ def splice_crossover(parent1, parent2):
 def average_crossover(parent1, parent2):
     """Performs average crossover between two parents and returns offspring."""
     
-    paired_parents = zip(parent1, parent2)
-    child = list()
+    paired_genes = zip(parent1, parent2)
+    child = []
 
-    for pair in paired_parents:
-        if pair[0] == pair[1]:  # if both parents have the same gene, keep it
-            child.append(pair[0])
-        elif pair[0] != pair[1]:    # if parents have different genes, pick a choice at random
-            child.append(random.choice(pair))
+    for pair in paired_genes:
+        child.append(random.choice(pair))
 
     return verifyIndividual(child)
 
