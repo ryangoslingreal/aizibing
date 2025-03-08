@@ -14,10 +14,10 @@ params = SimpleNamespace(
 
     # GA Properties
     GENERATIONS=10,
-    POPULATION=10,
+    POPULATION=5,
     REPETITIONS=30,
     FOLDS=5,
-    ELITE_RATE=0.1,
+    ELITE_RATE=0.2,
     PADDING_RATE=0.2,
     MUTATION_RATE=0.01,  # maybe implement 'variable mutation' via hamming distance?
 

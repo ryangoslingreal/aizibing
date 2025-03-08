@@ -13,13 +13,15 @@ from config import params
 class GeneticAlgorithm():
     def __init__(self, data):
         """Initializes the genetic algorithm with population-based feature selection."""
+        
         self.data = data
         self.population = []
+        self.fitness_scores = []
         
         # Define crossover thresholds
         self.elite_size = int(params.ELITE_RATE * params.POPULATION)
         self.padding_size = int(params.PADDING_RATE * params.POPULATION)
-        self.breeding_size = params.POPULATION - self.padding_size
+        self.breeding_size = params.POPULATION - self.padding_size - self.elite_size
         
         # Preprocess dataset
         self.X, self.y = data.data, data.target
@@ -45,50 +47,30 @@ class GeneticAlgorithm():
             print(f"Position {i}: {individual}    Fitness: {fitness}")
         
         # Extract breeding population
-        breeding_pool = self.population[:self.breeding_size]
-        breeding_pool_fitness = self.fitness_scores[:self.breeding_size]
+        breeding_pool = self.population[:self.breeding_size + self.elite_size]
+        breeding_pool_fitness = self.fitness_scores[:self.breeding_size + self.elite_size]
         
         next_population = []
         
         # Until breeding threshold reached
-        while len(next_population) < self.breeding_size - self.elite_size:
+        while len(next_population) < self.breeding_size:
             # Choose two unique parents if ALLOW_CLONING = False
-            print("\nChoosing two parents...")
             parent1, parent2 = params.SELECTION(breeding_pool, breeding_pool_fitness, params.ALLOW_CLONING)
             
-            print("Chosen parents:")
-            print(parent1)
-            print(parent2)
-            
-            # If ALLOW_CLONING = True and MUTATE_ON_CLONE = True
+            # If ALLOW_CLONING = True and MUTATE_ON_CLONE = True, mutate
+            # Else, crossover
             if parent1 == parent2 and params.MUTATE_ON_CLONE:
-                print("Identical parents. Mutating...")
-                print("Mutated offspring:")
-                mutated_offspring = self.verifyIndividuals(params.MUTATION(parent1))[0]
-                print(f"{parent1} -> {mutated_offspring}")
-                next_population.append(mutated_offspring)
-                continue
-            
-            # Otherwise, crossover
-            print("Performing crossover...")
-            print("Offspring:")
-            offspring = self.verifyIndividuals(params.CROSSOVER(parent1, parent2))
-            print(offspring)
-            next_population.extend(offspring)
+                offspring = params.MUTATION(parent1)
+            else:
+                offspring = params.CROSSOVER(parent1, parent2)
+                
+            next_population.append(offspring)
                     
-            # Apply basic mutation rate
-            for i, individual in enumerate(next_population):
-                # If no mutation, continue
-                if random.random() >= params.MUTATION_RATE:
-                    continue
-                
-                # Else, mutate
-                print("\nRandom mutation. Mutating...")
-                print("Mutated individual:")
-                new_individual = self.verifyIndividuals(params.MUTATION(individual))[0]
-                print(f"{individual} -> {new_individual}")
-                next_population[i] = new_individual
-                
+        # Apply basic mutation rate
+        for i, individual in enumerate(next_population):
+            if random.random() < params.MUTATION_RATE:
+                next_population[i] = params.MUTATION(individual)
+
         # Elite carry over
         next_population.extend(self.population[:self.elite_size])
         
@@ -98,18 +80,21 @@ class GeneticAlgorithm():
 
     def sort_population(self):
         """Sorts population by fitness scores."""
+        
         sorted_indices = np.argsort(self.fitness_scores)[::-1]
         self.population = [self.population[i] for i in sorted_indices]
         self.fitness_scores = [self.fitness_scores[i] for i in sorted_indices]
     
     def pad_population(self):
-        """Ensures the population remains at self.pop by adding new individuals if necessary."""
+        """Ensures the population remains at POPULATION by adding new individuals if necessary."""
+        
         difference = params.POPULATION - len(self.population)
         if difference > 0:
             self.population += self.generateIndividuals(difference, self.attributes)
 
     def evaluate_population(self):
-        """Evaluates fitness for each individual in the population."""
+        """Evaluates the fitness of all individuals in the population and stores their scores."""
+        
         fitness_scores = np.zeros(params.POPULATION)
         
         # Individual loop
@@ -121,6 +106,8 @@ class GeneticAlgorithm():
     
     @cache
     def rep_individual(self, individual):
+        """Computes the average fitness of an individual across multiple repetitions and caches result."""
+        
         rep_fitness = []
         
         # Rep loop
@@ -138,7 +125,8 @@ class GeneticAlgorithm():
         return np.mean(rep_fitness)
     
     def evaluate_individual(self, individual, train_idx, test_idx):
-        """Trains and evaluates an individual using GaussianNB."""
+        """Applies individual attribute mask and evaluates an individual using the specified fitness function."""
+        
         # Apply attribute mask
         X_train, X_test = self.X[train_idx][:, individual], self.X[test_idx][:, individual]
         y_train, y_test = self.y[train_idx], self.y[test_idx]
@@ -149,6 +137,7 @@ class GeneticAlgorithm():
     @staticmethod
     def generateIndividuals(count, attributes):
         """Generates a specified number of random individuals."""
+        
         population = []
         for _ in range(count):
             # Generate random individual
@@ -166,25 +155,12 @@ class GeneticAlgorithm():
     @staticmethod
     def generateNFolds(X, y, rep, fold):
         """Generates stratified k-fold splits for cross-validation."""
+        
         rep_folds = {}
         for r in range(params.REPETITIONS):
             skf = StratifiedKFold(n_splits=fold, shuffle=True, random_state=(42 + r))
             rep_folds[r] = list(skf.split(X, y))
             
         return rep_folds
-    
-    @staticmethod
-    def verifyIndividuals(individuals):
-        """Ensures all individuals have at least one True value. If all False, randomly set one to True."""
-        fixed_individuals = []
-        
-        for individual in individuals:
-            if not any(individual):
-                random_index = random.randint(0, len(individual) - 1)
-                individual[random_index] = True
-
-            fixed_individuals.append(individual)
-
-        return fixed_individuals
             
 ga = GeneticAlgorithm(data=iris)
