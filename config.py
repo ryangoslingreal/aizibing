@@ -14,7 +14,7 @@ params = SimpleNamespace(
 
     # GA Properties
     GENERATIONS=10,
-    POPULATION=5,
+    POPULATION=10,
     REPETITIONS=30,
     FOLDS=5,
     ELITE_RATE=0.2,
