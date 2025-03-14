@@ -157,10 +157,10 @@ class GeneticAlgorithm():
         """Generates stratified k-fold splits for cross-validation."""
         
         rep_folds = {}
-        for r in range(params.REPETITIONS):
+        for r in range(rep):
             skf = StratifiedKFold(n_splits=fold, shuffle=True, random_state=(42 + r))
             rep_folds[r] = list(skf.split(X, y))
             
         return rep_folds
             
-ga = GeneticAlgorithm(data=iris)
+ga = GeneticAlgorithm(data=breast_cancer)
