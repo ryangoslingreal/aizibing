@@ -4,16 +4,12 @@ AIzibing
 	-config
 
 	-fitness func
-		-NB
+		-other potential classification stuff
+		-regression?
 	-selection
-		-roulette
 		-truncation
 		-tournament
 		-stochastic universal sampling <-- SUS
 	-crossover
-		-splice
 		-proportional
 	-mutation
-		-shuffle
-		-random
-		-flip

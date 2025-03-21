@@ -1,12 +1,21 @@
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
 import random
+import pandas as pd
+
 
 from functools import cache
 
 from sklearn import datasets
+from sklearn.preprocessing import LabelEncoder
+
 iris = datasets.load_iris()
 breast_cancer = datasets.load_breast_cancer()
+# new dataset and preprocessing
+malware_data = pd.read_csv('TUANDROMD.csv')
+malware_data = malware_data.dropna(subset=['Label'])
+malware_data = malware_data.dropna()
+malware_data['Label'] = LabelEncoder().fit_transform(malware_data['Label'])
 
 from config import *
 
@@ -14,9 +23,11 @@ class GeneticAlgorithm():
     def __init__(self, data):
         """Initializes the genetic algorithm with population-based feature selection."""
         self.data = data
+        data = data.dropna()
         
         # Preprocess dataset
-        self.X, self.y = data.data, data.target
+        self.X = data.drop('Label', axis=1).values  # Now it's a NumPy array
+        self.y = data['Label'].values  # Also a NumPy array
         self.attributes = self.X.shape[1]
         self.rep_folds = self.generateNFolds(self.X, self.y, params.REPETITIONS, params.FOLDS)
         
@@ -173,4 +184,4 @@ class GeneticAlgorithm():
 
         return fixed_individuals
             
-ga = GeneticAlgorithm(data=iris)
+ga = GeneticAlgorithm(data=malware_data)
