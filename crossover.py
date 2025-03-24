@@ -23,8 +23,3 @@ def average_crossover(parent1, parent2):
         child.append(random.choice(pair))
 
     return verifyIndividual(child)
-
-def proportional_crossover(parent1, parent2):
-        """Performs proportional crossover between two parents and returns offspring."""
-        # TODO
-        pass
