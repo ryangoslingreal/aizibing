@@ -36,6 +36,33 @@ class GeneticAlgorithm():
         for g in range(params.GENERATIONS):
             print(f"\n--- Generation {g} ---")
             self.step()
+
+        self.sort_population()
+        result = self.unique_head(5)
+        print(result) # then call unique_head
+
+    # returns top 'n' unique individuals of population, so you can see what columns they use
+    def unique_head(self, n = 5):
+        unique_individuals = []
+        seen_individuals = set()  # track unique individuals
+
+        for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
+            individual_tuple = tuple(individual) # make individual hashable
+
+            # if unique
+            if individual_tuple not in seen_individuals:
+                seen_individuals.add(individual_tuple)
+                unique_individuals.append(individual)
+
+            if len(unique_individuals) >= n:
+                break
+
+        return unique_individuals
+    
+    # should return the feature names of an individual --- need a way to store feature names, maybe pass thru initialiser ?
+    def get_features(self, individual):
+        column_names = [str(name) for name in self.data.feature_names]
+        return [col for col, selected in zip(column_names, individual) if selected]
         
     def step(self):
         self.pad_population()
