@@ -27,6 +27,9 @@ def maximum_entropy(X_train, y_train, X_test, y_test):
 def hmm(X_train, y_train, X_test, y_test):
     pass
 
+
+from sklearn.neural_network import MLPClassifier
+
 def mlp_classifier(X_train, y_train, X_test, y_test):
     # Multi-Layer Perceptron (MLP) - its like perceptron but deep learning
     model = MLPClassifier(hidden_layer_sizes=(100, ), max_iter=500) # change this ?
