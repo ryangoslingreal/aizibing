@@ -10,13 +10,13 @@ params = SimpleNamespace(
     SELECTION=selection.roulette_wheel_selection,
     CROSSOVER=crossover.splice_crossover,
     MUTATION=mutation.shuffle_mutate,
-    FITNESS=fitness.gaussian_nb,
+    FITNESS=fitness.Bernoulli_nb,
 
     # GA Properties
-    GENERATIONS=3,
+    GENERATIONS=10,
     POPULATION=10,
     REPETITIONS=30,
-    FOLDS=5,
+    FOLDS=3,
     ELITE_RATE=0.1,
     PADDING_RATE=0.2,
     MUTATION_RATE=0.01,  # maybe implement 'variable mutation' via hamming distance?

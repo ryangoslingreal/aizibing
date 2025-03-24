@@ -15,7 +15,7 @@ breast_cancer = datasets.load_breast_cancer()
 malware_data = pd.read_csv('TUANDROMD.csv')
 malware_data = malware_data.dropna(subset=['Label'])
 malware_data = malware_data.dropna()
-malware_data['Label'] = LabelEncoder().fit_transform(malware_data['Label'])
+# malware_data['Label'] = LabelEncoder().fit_transform(malware_data['Label'])
 
 from config import *
 
