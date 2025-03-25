@@ -1,28 +1,43 @@
-from sklearn.naive_bayes import GaussianNB, BernoulliNB, MultinomialNB
+from sklearn.naive_bayes import GaussianNB
+from sklearn.linear_model import SGDClassifier, LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
 
 def gaussian_nb(X_train, y_train, X_test, y_test):
-    """Trains and evaluates an individual using GaussianNB."""
-    gnb = GaussianNB()
-    gnb.fit(X_train, y_train)
-    return gnb.score(X_test, y_test)
-
-def bernoulli_nb(X_train, y_train, X_test, y_test):
-    """Trains and evaluates an individual using BernoulliNB."""
-    bnb = BernoulliNB()
-    bnb.fit(X_train, y_train)
-    return bnb.score(X_test, y_test)
-
-def multinomial_nb(X_train, y_train, X_test, y_test):
-    """Trains and evaluates an individual using MultinomialNB."""
-    mnb = MultinomialNB()
-    mnb.fit(X_train, y_train)
-    return mnb.score(X_test, y_test)
+    """Trains and evaluates using GaussianNB."""
+    
+    clf = GaussianNB()
+    clf.fit(X_train, y_train)
+    y_pred = clf.predict(X_test)
+    return accuracy_score(y_test, y_pred)
 
 def hinge_loss(X_train, y_train, X_test, y_test):
-    pass
+    """Trains and evaluates using SGDClassifier with hinge loss (SVM).
+    
+    Can handle continuous numerical features well, but typically requires feature scaling."""
+    
+    clf = SGDClassifier(loss='hinge', random_state=42)
+    clf.fit(X_train, y_train)
+    y_pred = clf.predict(X_test)
+    return accuracy_score(y_test, y_pred)
 
 def maximum_entropy(X_train, y_train, X_test, y_test):
-    pass
+    """Trains and evaluates using Logistic Regression (Maximum Entropy).
+    
+    General-purpose classifier suitable for both continuous and discrete numerical features. 
+    Feature scaling often improves performance."""
+    
+    clf = LogisticRegression(max_iter=1000, random_state=42)
+    clf.fit(X_train, y_train)
+    y_pred = clf.predict(X_test)
+    return accuracy_score(y_test, y_pred)
 
-def hmm(X_train, y_train, X_test, y_test):
-    pass
+def decision_tree(X_train, y_train, X_test, y_test):
+    """Trains and evaluates using DecisionTreeClassifier.
+    
+    Highly general, robust to varying types of features (categorical, numerical) without requiring extensive preprocessing."""
+    
+    clf = DecisionTreeClassifier(random_state=42)
+    clf.fit(X_train, y_train)
+    y_pred = clf.predict(X_test)
+    return accuracy_score(y_test, y_pred)
