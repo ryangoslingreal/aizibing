@@ -3,6 +3,7 @@ import numpy as np
 import random
 
 from functools import cache
+import concurrent.futures # multi-threading
 
 from sklearn.datasets import load_iris, load_breast_cancer
 iris = load_iris()
@@ -29,17 +30,44 @@ class GeneticAlgorithm():
         self.rep_folds = self.generateNFolds(self.X, self.y, params.REPETITIONS, params.FOLDS)
         
         # Compute baseline fitness
-        baseline_fitness = self.rep_individual(tuple([True for _ in range(self.attributes)]))
+        baseline_fitness = self.rep_individual_parallel(tuple([True for _ in range(self.attributes)]))
         print(f"Baseline fitness: {baseline_fitness}")
         
         for g in range(params.GENERATIONS):
             print(f"\n--- Generation {g} ---")
             self.step()
+
+        self.sort_population()
+        result = self.unique_head(5)
+        print(result) # then call unique_head
+
+    # returns top 'n' unique individuals of population, so you can see what columns they use
+    def unique_head(self, n = 5):
+        unique_individuals = []
+        seen_individuals = set()  # track unique individuals
+
+        for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
+            individual_tuple = tuple(individual) # make individual hashable
+
+            # if unique
+            if individual_tuple not in seen_individuals:
+                seen_individuals.add(individual_tuple)
+                unique_individuals.append(individual)
+
+            if len(unique_individuals) >= n:
+                break
+
+        return unique_individuals
+    
+    # should return the feature names of an individual --- need a way to store feature names, maybe pass thru initialiser ?
+    def get_features(self, individual):
+        column_names = [str(name) for name in self.data.feature_names]
+        return [col for col, selected in zip(column_names, individual) if selected]
         
     def step(self):
         self.pad_population()
         
-        self.fitness_scores = self.evaluate_population()
+        self.fitness_scores = self.evaluate_population_parallel()
 
         self.sort_population()
 
@@ -104,6 +132,24 @@ class GeneticAlgorithm():
         
         return fitness_scores
     
+    def evaluate_population_parallel(self):
+        """Evaluates fitness of all individuals using multi-threading."""
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            fitness_scores = list(executor.map(self.rep_individual_parallel, [tuple(ind) for ind in self.population]))
+
+        return fitness_scores
+
+    @cache
+    def rep_individual_parallel(self, individual):
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            rep_fitness = list(executor.map(self.evaluate_rep, [individual] * params.REPETITIONS, range(params.REPETITIONS)))
+
+        return np.mean(rep_fitness)
+
+    # this function and above basically does rep_individual
+    def evaluate_rep(self, individual, r):
+        return np.mean([self.evaluate_individual(individual, train_idx, test_idx) for train_idx, test_idx in self.rep_folds[r]])
+
     @cache
     def rep_individual(self, individual):
         """Computes the average fitness of an individual across multiple repetitions and caches result."""
