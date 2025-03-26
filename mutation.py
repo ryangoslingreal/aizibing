@@ -4,8 +4,13 @@ import random
 
 def shuffle_mutate(individual):
     """Randomly shuffles the order of features in the individual."""
-    random.shuffle(individual)
-    return verifyIndividual(individual)
+    
+    shuffled_individual = random.shuffle(individual)
+
+    while(shuffled_individual == individual):
+        shuffled_individual = random.shuffle(individual)
+
+    return verifyIndividual(shuffled_individual)
 
 
 def random_mutate(individual, n=1):
