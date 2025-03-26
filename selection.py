@@ -12,10 +12,14 @@ def roulette_wheel_selection(population, fitness_scores, allow_cloning=True):
     return population[parent_indices[0]], population[parent_indices[1]]
 
 def tournament_selection(population, fitness_scores, k=5, allow_cloning=True):
-    """Selects an individual through 'k 'rounds where random individuals compete, with the fittest advancing each round."""
+    """Selects two parents using two tournaments to find the fittest individual from 'k' tournament size."""
     
-    # TODO
-    pass
+    def tournament_round():
+        competitors = np.random.choice(len(population), size=k, replace=allow_cloning)
+        best = max(competitors, key = lambda x: fitness_scores[x])
+        return population[best]
+        
+    return tournament_round(), tournament_round()
 
 def truncation_selection(population, fitness_scores, proportion=0.5, allow_cloning=True):
     """Randomly selects an individual from the top `proportion` of the population."""
