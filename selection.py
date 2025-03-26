@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 def roulette_wheel_selection(population, fitness_scores, allow_cloning=True):
     """Selects two parents using roulette wheel selection (fitness-proportionate), ensuring uniqueness if required."""
@@ -24,9 +25,13 @@ def tournament_selection(population, fitness_scores, k=5, allow_cloning=True):
 def truncation_selection(population, fitness_scores, proportion=0.5, allow_cloning=True):
     """Randomly selects an individual from the top `proportion` of the population."""
     
-    # Requires sorting population.
-    # TODO
-    pass
+    sorted_population = [x for _, x in sorted(zip(fitness_scores, population),reverse=True)]
+    min_pop = math.ceil(len(sorted_population)*proportion)
+
+    def select_individual():
+        return np.random.choice(sorted_population[:min_pop], replace = allow_cloning)
+    
+    return select_individual(), select_individual()
 
 def sus_selection(population, fitness_scores, n=1, allow_cloning=True):
     """Selects `n` individuals using evenly spaced selection points across the fitness distribution."""
