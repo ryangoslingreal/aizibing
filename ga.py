@@ -4,18 +4,11 @@ import numpy as np
 from functools import cache
 import concurrent.futures # multi-threading
 
-import utils
-from load_a_dataset import *
-
-iris = load_iris()
-breast = load_breast_cancer()
-indian_pine = load_indian_pines()
-german_credit = load_german_credit()
-
-from config import params
-
 # for feature names and outputting result
 from utils import *
+from load_a_dataset import *
+from config import params
+
 
 class GeneticAlgorithm:
     def __init__(self, data):
@@ -213,9 +206,13 @@ class GeneticAlgorithm:
             
         return rep_folds
 
+iris = load_iris()
+breast = load_breast_cancer()
+indian_pine = load_indian_pines()
+german_credit = load_german_credit()
 
 ds_data = iris
 ds_name = 'iris'
-ga = GeneticAlgorithm(data=ds_data)
 
+ga = GeneticAlgorithm(data=ds_data)
 output_result(ga.best_per_gen, ga.data.feature_names, ds_name)
