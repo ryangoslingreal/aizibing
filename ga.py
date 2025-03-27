@@ -10,6 +10,7 @@ from load_a_dataset import *
 iris = load_iris()
 breast = load_breast_cancer()
 indian_pine = load_indian_pines()
+german_credit = load_german_credit()
 
 from config import params
 
@@ -211,4 +212,4 @@ class GeneticAlgorithm:
             
         return rep_folds
             
-ga = GeneticAlgorithm(data=indian_pine)
+ga = GeneticAlgorithm(data=german_credit)
