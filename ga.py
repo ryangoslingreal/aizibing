@@ -4,6 +4,7 @@ import numpy as np
 from functools import cache
 import concurrent.futures # multi-threading
 
+import utils
 from load_a_dataset import *
 
 iris = load_iris()
@@ -23,7 +24,7 @@ class GeneticAlgorithm:
         self.data = data
         self.population = []
         self.fitness_scores = []
-        self.best_individuals = []
+        self.best_per_gen = []
         
         # Define crossover thresholds
         self.elite_size = int(params.ELITE_RATE * params.POPULATION)
@@ -72,7 +73,7 @@ class GeneticAlgorithm:
         self.fitness_scores = self.evaluate_population_parallel()
 
         self.sort_population()
-        self.best_individuals.append(self.population[0]) # storing top individual to list for resulting feature name
+        self.best_per_gen.append(self.population[0]) # storing top individual to list for resulting feature name
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
@@ -216,4 +217,5 @@ class GeneticAlgorithm:
 ds_data = german_credit
 ds_name = 'german_credit'
 ga = GeneticAlgorithm(data=ds_data)
-print(ds_name)
+
+output_result(ga.best_per_gen, ga.data.feature_names, ds_name)
