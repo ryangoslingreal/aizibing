@@ -7,7 +7,6 @@ import concurrent.futures # multi-threading
 # for feature names and outputting result
 from utils import *
 from load_a_dataset import *
-from config import params
 
 
 class GeneticAlgorithm:
@@ -219,11 +218,10 @@ from fitness import (
     # mlp_classifier
 )
 from config import params
-from sklearn.datasets import load_iris  # or your other dataset
 from utils import output_result  # if this is your visualization/logging function
 
-ds_data = load_iris()
-ds_name = 'iris'
+ds_data = indian_pine
+ds_name = 'indian_pine'
 
 fitness_functions = [
     gaussian_nb,
@@ -234,10 +232,24 @@ fitness_functions = [
 ]
 fitness_function_names = [func.__name__ for func in fitness_functions]
 
+import time
+
 for func in fitness_functions:
     params.FITNESS = func
     fitness_function_name = func.__name__
     print(f"\n--- Running GA with fitness function: {fitness_function_name} ---")
 
+    # Start timer BEFORE GA begins
+    start_time = time.time()
+
     ga = GeneticAlgorithm(data=ds_data)
-    output_result(ga.best_per_gen, ga.data.feature_names, ds_name, fitness_function_name)
+
+    elapsed_time = time.time() - start_time  # Time taken for GA to run
+
+    output_result(
+        best_individuals=ga.best_per_gen,
+        feature_names=ga.data.feature_names,
+        dataset_name=ds_name,
+        fitness_function_name=fitness_function_name,
+        elapsed_time=elapsed_time
+    )
