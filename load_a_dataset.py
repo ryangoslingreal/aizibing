@@ -25,8 +25,9 @@ def load_openml(dataset_id):
 
 load_iris = sk_load_iris
 load_breast_cancer = sk_load_breast_cancer
-load_indian_pines = load_openml(41972)
-load_german_credit = load_openml(46416)
+load_indian_pines = lambda: load_openml(41972)
+load_german_credit = lambda: load_openml(46416)
+
 # Public interface
 __all__ = [
     "load_iris",
