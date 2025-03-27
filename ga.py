@@ -14,7 +14,7 @@ german_credit = load_german_credit()
 
 from config import params
 
-# for feature names
+# for feature names and outputting result
 from utils import *
 
 class GeneticAlgorithm:
@@ -214,8 +214,8 @@ class GeneticAlgorithm:
         return rep_folds
 
 
-ds_data = german_credit
-ds_name = 'german_credit'
+ds_data = iris
+ds_name = 'iris'
 ga = GeneticAlgorithm(data=ds_data)
 
 output_result(ga.best_per_gen, ga.data.feature_names, ds_name)

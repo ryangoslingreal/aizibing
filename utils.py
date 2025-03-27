@@ -28,7 +28,7 @@ def output_result(best_individuals, feature_names, dataset_name):
     Saves best individual features from each generation to a file in the project root.
     """
     safe_name = dataset_name.lower().replace(" ", "_")
-    filename = f"genetic_features_{safe_name}.txt"
+    filename = f"{safe_name}_results.txt"
     file_path = os.path.join(os.getcwd(), filename)
 
     with open(file_path, 'w', encoding='utf-8') as f:
