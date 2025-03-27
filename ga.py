@@ -14,6 +14,9 @@ german_credit = load_german_credit()
 
 from config import params
 
+# for feature names
+from utils import get_selected_feature_names, print_best_features_per_generation
+
 class GeneticAlgorithm:
     def __init__(self, data):
         """Initializes the genetic algorithm with population-based feature selection."""
@@ -21,6 +24,7 @@ class GeneticAlgorithm:
         self.data = data
         self.population = []
         self.fitness_scores = []
+        self.best_individuals = []
         
         # Define crossover thresholds
         self.elite_size = int(params.ELITE_RATE * params.POPULATION)
@@ -43,6 +47,7 @@ class GeneticAlgorithm:
         self.sort_population()
         result = self.unique_head(5)
         print(result) # then call unique_head
+        print_best_features_per_generation(self.best_individuals, self.data.feature_names)
 
     # returns top 'n' unique individuals of population, so you can see what columns they use
     def unique_head(self, n = 5):
@@ -73,6 +78,7 @@ class GeneticAlgorithm:
         self.fitness_scores = self.evaluate_population_parallel()
 
         self.sort_population()
+        self.best_individuals.append(self.population[0])
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")

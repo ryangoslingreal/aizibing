@@ -13,7 +13,7 @@ params = SimpleNamespace(
     FITNESS=fitness.gaussian_nb,
 
     # GA Properties
-    GENERATIONS=10,
+    GENERATIONS=3,
     POPULATION=10,
     REPETITIONS=30,
     FOLDS=5,

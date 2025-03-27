@@ -1,4 +1,3 @@
-import os
 import openml
 from sklearn.datasets import load_iris as sk_load_iris, load_breast_cancer as sk_load_breast_cancer
 from sklearn.utils import Bunch
