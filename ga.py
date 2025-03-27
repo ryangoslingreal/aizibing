@@ -1,6 +1,5 @@
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
-import random
 
 from functools import cache
 import concurrent.futures # multi-threading
@@ -15,7 +14,7 @@ german_credit = load_german_credit()
 from config import params
 
 # for feature names
-from utils import get_selected_feature_names, print_best_features_per_generation
+from utils import *
 
 class GeneticAlgorithm:
     def __init__(self, data):
@@ -47,7 +46,6 @@ class GeneticAlgorithm:
         self.sort_population()
         result = self.unique_head(5)
         print(result) # then call unique_head
-        print_best_features_per_generation(self.best_individuals, self.data.feature_names)
 
     # returns top 'n' unique individuals of population, so you can see what columns they use
     def unique_head(self, n = 5):
@@ -67,18 +65,14 @@ class GeneticAlgorithm:
 
         return unique_individuals
     
-    # should return the feature names of an individual --- need a way to store feature names, maybe pass thru initialiser ?
-    def get_features(self, individual):
-        column_names = [str(name) for name in self.data.feature_names]
-        return [col for col, selected in zip(column_names, individual) if selected]
-        
+
     def step(self):
         self.pad_population()
         
         self.fitness_scores = self.evaluate_population_parallel()
 
         self.sort_population()
-        self.best_individuals.append(self.population[0])
+        self.best_individuals.append(self.population[0]) # storing top individual to list for resulting feature name
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
@@ -217,5 +211,9 @@ class GeneticAlgorithm:
             rep_folds[r] = list(skf.split(X, y))
             
         return rep_folds
-            
-ga = GeneticAlgorithm(data=german_credit)
+
+
+ds_data = german_credit
+ds_name = 'german_credit'
+ga = GeneticAlgorithm(data=ds_data)
+print(ds_name)
