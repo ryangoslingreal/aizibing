@@ -10,26 +10,17 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-iris = load_iris()
-breast_cancer = load_breast_cancer()
+from load_a_dataset import load_openml
 
-dataset = breast_cancer
-
-
-# super basic preprocessing trash, just to drop null values:
-
-#COLUMN_NA_THRESHOLD = 0.2 # if 20% of column is null, drop column.
-#print(df.isnull().mean())
-#df = df.loc[:, df.isnull().mean() < COLUMN_NA_THRESHOLD]
-#df = df.dropna()
-
-
-
-X_train, X_test, y_train, y_test = train_test_split(dataset.data, dataset.target, test_size=0.2, random_state=42)
+#iris = load_iris()
+#breast_cancer = load_breast_cancer()
 
 def run_function(func):
     if (func.__name__ == "accuracy_score"): return # skip this function
     try:
+        dataset = load_openml(5)
+        X_train, X_test, y_train, y_test = train_test_split(dataset.data, dataset.target, test_size=0.2, random_state=42)
+
         start_time = time.time()
         result = func(X_train, y_train, X_test, y_test)
         time_taken = time.time() - start_time
@@ -38,11 +29,21 @@ def run_function(func):
         return (func.__name__, result, time_taken)
     except Exception as e:
         print(f"Error occurred while running {func.__name__}: {e}\n")
-        return (func.__name__, None)
+        return
 
 functions = [func for _, func in inspect.getmembers(fitness, inspect.isfunction)]
 
 if __name__ == "__main__":
+    #dataset = load_openml(5)
+    #print(dataset.data.shape)
+
+    # need to do .astype(int) cuz xgboost dont like string target
+    #X_train, X_test, y_train, y_test = train_test_split(dataset.data, dataset.target, test_size=0.2, random_state=42)
+
+
+    #openml_id = input("enter the openml dataset id: ")
+    
+
     with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
         results = pool.map(run_function, functions)
 

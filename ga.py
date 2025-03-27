@@ -7,6 +7,7 @@ import concurrent.futures # multi-threading
 # for feature names and outputting result
 from utils import *
 from load_a_dataset import *
+from load_a_dataset import load_openml
 from config import params
 
 
@@ -38,10 +39,8 @@ class GeneticAlgorithm:
             self.step()
 
         self.sort_population()
-        result = self.unique_head(5)
-        print(result) # then call unique_head
 
-    # returns top 'n' unique individuals of population, so you can see what columns they use
+    # returns top 'n' unique individuals of population, so you can see what columns they use - FIX THIS
     def unique_head(self, n = 5):
         unique_individuals = []
         seen_individuals = set()  # track unique individuals
@@ -70,6 +69,7 @@ class GeneticAlgorithm:
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
+            break # just output best individual
         
         # Extract breeding population
         breeding_pool = self.population[:self.breeding_size + self.elite_size]
@@ -206,13 +206,24 @@ class GeneticAlgorithm:
             
         return rep_folds
 
-iris = load_iris()
-breast = load_breast_cancer()
-indian_pine = load_indian_pines()
-german_credit = load_german_credit()
 
-ds_data = iris
-ds_name = 'iris'
 
-ga = GeneticAlgorithm(data=ds_data)
-output_result(ga.best_per_gen, ga.data.feature_names, ds_name)
+if __name__ == "__main__":
+    iris = load_iris()
+    breast = load_breast_cancer()
+    indian_pine = load_indian_pines()
+    german_credit = load_german_credit()
+
+    # Set seed for reproducibility
+    #seed = 42
+    #np.random.seed(seed)
+    #num_samples = 1000
+    #random_indices = np.random.choice(indian_pine.data.shape[0], num_samples, replace=False)
+    #indian_pine.data = indian_pine.data[random_indices]
+    #indian_pine.target = indian_pine.target[random_indices]
+
+    ds_data = iris
+    ds_name = 'iris'
+
+    ga = GeneticAlgorithm(data=load_openml(5))
+    #output_result(ga.best_per_gen, ga.data.feature_names, ds_name)
