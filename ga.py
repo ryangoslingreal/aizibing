@@ -211,8 +211,33 @@ breast = load_breast_cancer()
 indian_pine = load_indian_pines()
 german_credit = load_german_credit()
 
-ds_data = iris
+from fitness import (
+    gaussian_nb,
+    hinge_loss,
+    maximum_entropy,
+    decision_tree,
+    # mlp_classifier
+)
+from config import params
+from sklearn.datasets import load_iris  # or your other dataset
+from utils import output_result  # if this is your visualization/logging function
+
+ds_data = load_iris()
 ds_name = 'iris'
 
-ga = GeneticAlgorithm(data=ds_data)
-output_result(ga.best_per_gen, ga.data.feature_names, ds_name)
+fitness_functions = [
+    gaussian_nb,
+    hinge_loss,
+    maximum_entropy,
+    decision_tree,
+    # mlp_classifier,
+]
+fitness_function_names = [func.__name__ for func in fitness_functions]
+
+for func in fitness_functions:
+    params.FITNESS = func
+    fitness_function_name = func.__name__
+    print(f"\n--- Running GA with fitness function: {fitness_function_name} ---")
+
+    ga = GeneticAlgorithm(data=ds_data)
+    output_result(ga.best_per_gen, ga.data.feature_names, ds_name, fitness_function_name)

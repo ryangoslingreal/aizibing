@@ -23,12 +23,13 @@ def print_name_from_best(best_per_gen, feature_names):
 
 
 
-def output_result(best_individuals, feature_names, dataset_name):
+def output_result(best_individuals, feature_names, dataset_name, fitness_functions):
     """
     Saves best individual features from each generation to a file in the project root.
     """
     safe_name = dataset_name.lower().replace(" ", "_")
-    filename = f"{safe_name}_results.txt"
+    clf_name = fitness_functions
+    filename = f"{safe_name}_{clf_name}results.txt"
     file_path = os.path.join(os.getcwd(), filename)
 
     with open(file_path, 'w', encoding='utf-8') as f:
