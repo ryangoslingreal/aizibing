@@ -5,13 +5,15 @@ import random
 from functools import cache
 import concurrent.futures # multi-threading
 
-from sklearn.datasets import load_iris, load_breast_cancer
+from load_a_dataset import *
+
 iris = load_iris()
-breast_cancer = load_breast_cancer()
+breast = load_breast_cancer()
+indian_pine = load_indian_pines()
 
 from config import params
 
-class GeneticAlgorithm():
+class GeneticAlgorithm:
     def __init__(self, data):
         """Initializes the genetic algorithm with population-based feature selection."""
         
@@ -209,4 +211,4 @@ class GeneticAlgorithm():
             
         return rep_folds
             
-ga = GeneticAlgorithm(data=breast_cancer)
+ga = GeneticAlgorithm(data=indian_pine)
