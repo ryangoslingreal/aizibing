@@ -70,7 +70,7 @@ class GeneticAlgorithm:
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
-            break # just output best individual
+            #break # just output best individual
         
         # Extract breeding population
         breeding_pool = self.population[:self.breeding_size + self.elite_size]
@@ -227,9 +227,5 @@ if __name__ == "__main__":
     ds_data = iris
     ds_name = 'iris'
 
-    start_time = time.time()
-    ga = GeneticAlgorithm(data=arrythmia)
-    time_taken = time.time() - start_time
-
-    print(f"time taken to evolve: {time_taken}")
+    ga = GeneticAlgorithm(data=load_iris_with_noise(1))
     #output_result(ga.best_per_gen, ga.data.feature_names, ds_name)

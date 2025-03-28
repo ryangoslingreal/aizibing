@@ -1,3 +1,6 @@
+from sklearn.datasets import load_iris
+from sklearn.utils import Bunch
+import numpy as np
 import random
 import os
 
@@ -41,3 +44,14 @@ def output_result(best_individuals, feature_names, dataset_name):
             f.write("\n")
 
     print(f"\n✅ Feature log saved to: {file_path}")
+    
+def load_iris_with_noise(n):
+    """Load iris dataset and adds `n` columns of noise to features."""
+    iris = load_iris()
+    X = iris.data
+    y = iris.target
+
+    noise = np.random.randn(X.shape[0], n)
+    X_noisy = np.hstack((X, noise))
+
+    return Bunch(data=X_noisy, target=y, feature_names=iris.feature_names + [f"noise_{i+1}" for i in range(n)])
