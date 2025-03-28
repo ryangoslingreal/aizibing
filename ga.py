@@ -12,9 +12,10 @@ from config import params
 
 
 class GeneticAlgorithm:
-    def __init__(self, data):
+    def __init__(self, data, usemtnc=True):
         """Initializes the genetic algorithm with population-based feature selection."""
-        
+        self.usemtnc = usemtnc
+
         self.data = data
         self.population = []
         self.fitness_scores = []
@@ -31,7 +32,7 @@ class GeneticAlgorithm:
         self.rep_folds = self.generateNFolds(self.X, self.y, params.REPETITIONS, params.FOLDS)
         
         # Compute baseline fitness
-        baseline_fitness = self.rep_individual_parallel(tuple([True for _ in range(self.attributes)]))
+        baseline_fitness = self.rep_individual_parallel(tuple([True for _ in range(self.attributes)])) if usemtnc else self.rep_individual(tuple([True for _ in range(self.attributes)]))
         print(f"Baseline fitness: {baseline_fitness}")
         
         for g in range(params.GENERATIONS):
@@ -62,14 +63,14 @@ class GeneticAlgorithm:
     def step(self):
         self.pad_population()
         
-        self.fitness_scores = self.evaluate_population_parallel()
+        self.fitness_scores = self.evaluate_population_parallel() if self.usemtnc else self.evaluate_population()
 
         self.sort_population()
         self.best_per_gen.append(self.population[0]) # storing top individual to list for resulting feature name
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
-            break # just output best individual
+            #break # just output best individual
         
         # Extract breeding population
         breeding_pool = self.population[:self.breeding_size + self.elite_size]
@@ -125,7 +126,7 @@ class GeneticAlgorithm:
         # Individual loop
         for i, individual in enumerate(self.population):
             # Convert to tuple for caching
-            fitness_scores[i] = self.rep_individual(tuple(individual))
+            fitness_scores[i] = self.rep_individual_parallel(tuple(individual))
         
         return fitness_scores
     
@@ -147,7 +148,7 @@ class GeneticAlgorithm:
     def evaluate_rep(self, individual, r):
         return np.mean([self.evaluate_individual(individual, train_idx, test_idx) for train_idx, test_idx in self.rep_folds[r]])
 
-    @cache
+    #@cache
     def rep_individual(self, individual):
         """Computes the average fitness of an individual across multiple repetitions and caches result."""
         
@@ -201,18 +202,19 @@ class GeneticAlgorithm:
         
         rep_folds = {}
         for r in range(rep):
-            skf = StratifiedKFold(n_splits=fold, shuffle=True, random_state=(42 + r))
+            skf = StratifiedKFold(n_splits=fold, shuffle=True)
             rep_folds[r] = list(skf.split(X, y))
             
         return rep_folds
 
-
+import time
 
 if __name__ == "__main__":
     iris = load_iris()
     breast = load_breast_cancer()
     indian_pine = load_indian_pines()
     german_credit = load_german_credit()
+    arrythmia = load_openml(5) # really should only load one at a time, cuz of memory... but not too deep
 
     # Set seed for reproducibility
     #seed = 42
@@ -225,5 +227,5 @@ if __name__ == "__main__":
     ds_data = iris
     ds_name = 'iris'
 
-    ga = GeneticAlgorithm(data=load_openml(5))
+    ga = GeneticAlgorithm(data=load_iris_with_noise(1))
     #output_result(ga.best_per_gen, ga.data.feature_names, ds_name)
