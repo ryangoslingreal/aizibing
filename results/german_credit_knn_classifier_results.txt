@@ -1,0 +1,68 @@
+📊 Best features per generation for 'german_credit'
+🔧 Classifier used: knn_classifier
+⏱️ Time taken: 16.59 seconds
+
+Generation 0 (12 features):
+ - account_balance
+ - purpose
+ - value_savings_stocks
+ - instalment_per_cent
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - type_of_apartment
+ - occupation
+ - no_of_dependents
+ - foreign_worker
+
+Generation 1 (12 features):
+ - account_balance
+ - purpose
+ - value_savings_stocks
+ - instalment_per_cent
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - type_of_apartment
+ - occupation
+ - no_of_dependents
+ - foreign_worker
+
+Generation 2 (11 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - purpose
+ - value_savings_stocks
+ - instalment_per_cent
+ - guarantors
+ - most_valuable_available_asset
+ - type_of_apartment
+ - occupation
+ - no_of_dependents
+ - foreign_worker
+
+Generation 3 (10 features):
+ - account_balance
+ - purpose
+ - value_savings_stocks
+ - length_of_current_employment
+ - guarantors
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - no_of_credits_at_this_bank
+ - no_of_dependents
+ - foreign_worker
+
+Generation 4 (10 features):
+ - account_balance
+ - purpose
+ - value_savings_stocks
+ - length_of_current_employment
+ - guarantors
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - no_of_credits_at_this_bank
+ - no_of_dependents
+ - foreign_worker

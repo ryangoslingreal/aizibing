@@ -1,0 +1,90 @@
+📊 Best features per generation for 'german_credit'
+🔧 Classifier used: xgboost_classifier
+⏱️ Time taken: 14.92 seconds
+
+Generation 0 (14 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - credit_amount
+ - value_savings_stocks
+ - instalment_per_cent
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - age_years
+ - type_of_apartment
+ - occupation
+
+Generation 1 (14 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - credit_amount
+ - value_savings_stocks
+ - instalment_per_cent
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - age_years
+ - type_of_apartment
+ - occupation
+
+Generation 2 (13 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - credit_amount
+ - value_savings_stocks
+ - instalment_per_cent
+ - duration_in_current_address
+ - age_years
+ - type_of_apartment
+ - no_of_credits_at_this_bank
+ - telephone
+ - foreign_worker
+
+Generation 3 (18 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - credit_amount
+ - value_savings_stocks
+ - length_of_current_employment
+ - instalment_per_cent
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - concurrent_credits
+ - type_of_apartment
+ - no_of_credits_at_this_bank
+ - occupation
+ - no_of_dependents
+ - telephone
+ - foreign_worker
+
+Generation 4 (18 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - credit_amount
+ - value_savings_stocks
+ - length_of_current_employment
+ - instalment_per_cent
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - concurrent_credits
+ - type_of_apartment
+ - no_of_credits_at_this_bank
+ - occupation
+ - no_of_dependents
+ - telephone
+ - foreign_worker

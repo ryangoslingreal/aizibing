@@ -1,0 +1,70 @@
+📊 Best features per generation for 'german_credit'
+🔧 Classifier used: mlp_classifier
+⏱️ Time taken: 406.16 seconds
+
+Generation 0 (11 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - value_savings_stocks
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - age_years
+ - no_of_credits_at_this_bank
+ - no_of_dependents
+ - telephone
+ - foreign_worker
+
+Generation 1 (11 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - value_savings_stocks
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - age_years
+ - no_of_credits_at_this_bank
+ - no_of_dependents
+ - telephone
+ - foreign_worker
+
+Generation 2 (11 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - value_savings_stocks
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - age_years
+ - no_of_credits_at_this_bank
+ - no_of_dependents
+ - telephone
+ - foreign_worker
+
+Generation 3 (11 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - value_savings_stocks
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - age_years
+ - no_of_credits_at_this_bank
+ - no_of_dependents
+ - telephone
+ - foreign_worker
+
+Generation 4 (13 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - value_savings_stocks
+ - length_of_current_employment
+ - instalment_per_cent
+ - sex_marital_status
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - age_years
+ - no_of_credits_at_this_bank
+ - occupation
+ - telephone
+ - foreign_worker

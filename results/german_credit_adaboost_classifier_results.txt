@@ -1,0 +1,71 @@
+📊 Best features per generation for 'german_credit'
+🔧 Classifier used: adaboost_classifier
+⏱️ Time taken: 59.74 seconds
+
+Generation 0 (11 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - value_savings_stocks
+ - instalment_per_cent
+ - sex_marital_status
+ - duration_in_current_address
+ - age_years
+ - no_of_dependents
+ - telephone
+ - foreign_worker
+
+Generation 1 (12 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - credit_amount
+ - value_savings_stocks
+ - instalment_per_cent
+ - sex_marital_status
+ - duration_in_current_address
+ - age_years
+ - no_of_dependents
+ - telephone
+ - foreign_worker
+
+Generation 2 (11 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - value_savings_stocks
+ - instalment_per_cent
+ - sex_marital_status
+ - duration_in_current_address
+ - age_years
+ - no_of_dependents
+ - telephone
+ - foreign_worker
+
+Generation 3 (12 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - credit_amount
+ - value_savings_stocks
+ - instalment_per_cent
+ - guarantors
+ - age_years
+ - no_of_dependents
+ - telephone
+ - foreign_worker
+
+Generation 4 (12 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - credit_amount
+ - value_savings_stocks
+ - instalment_per_cent
+ - guarantors
+ - age_years
+ - no_of_dependents
+ - telephone
+ - foreign_worker

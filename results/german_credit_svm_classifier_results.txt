@@ -1,0 +1,61 @@
+📊 Best features per generation for 'german_credit'
+🔧 Classifier used: svm_classifier
+⏱️ Time taken: 1.84 seconds
+
+Generation 0 (13 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - value_savings_stocks
+ - length_of_current_employment
+ - instalment_per_cent
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - type_of_apartment
+ - telephone
+ - foreign_worker
+
+Generation 1 (8 features):
+ - account_balance
+ - purpose
+ - value_savings_stocks
+ - length_of_current_employment
+ - instalment_per_cent
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - foreign_worker
+
+Generation 2 (9 features):
+ - account_balance
+ - payment_status_of_previous_credit
+ - purpose
+ - value_savings_stocks
+ - length_of_current_employment
+ - instalment_per_cent
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - foreign_worker
+
+Generation 3 (9 features):
+ - account_balance
+ - payment_status_of_previous_credit
+ - purpose
+ - value_savings_stocks
+ - length_of_current_employment
+ - instalment_per_cent
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - foreign_worker
+
+Generation 4 (9 features):
+ - account_balance
+ - payment_status_of_previous_credit
+ - purpose
+ - value_savings_stocks
+ - length_of_current_employment
+ - instalment_per_cent
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - foreign_worker

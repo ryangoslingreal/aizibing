@@ -1,0 +1,62 @@
+📊 Best features per generation for 'german_credit'
+🔧 Classifier used: gradient_boosting_classifier
+⏱️ Time taken: 72.59 seconds
+
+Generation 0 (10 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - purpose
+ - credit_amount
+ - guarantors
+ - most_valuable_available_asset
+ - concurrent_credits
+ - type_of_apartment
+ - telephone
+ - foreign_worker
+
+Generation 1 (10 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - purpose
+ - credit_amount
+ - guarantors
+ - most_valuable_available_asset
+ - concurrent_credits
+ - type_of_apartment
+ - telephone
+ - foreign_worker
+
+Generation 2 (9 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - credit_amount
+ - length_of_current_employment
+ - guarantors
+ - type_of_apartment
+ - occupation
+ - telephone
+ - foreign_worker
+
+Generation 3 (10 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - credit_amount
+ - value_savings_stocks
+ - length_of_current_employment
+ - duration_in_current_address
+ - age_years
+ - no_of_credits_at_this_bank
+ - no_of_dependents
+
+Generation 4 (10 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - credit_amount
+ - value_savings_stocks
+ - length_of_current_employment
+ - duration_in_current_address
+ - age_years
+ - no_of_credits_at_this_bank
+ - no_of_dependents
