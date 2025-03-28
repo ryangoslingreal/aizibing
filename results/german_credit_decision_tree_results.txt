@@ -1,0 +1,73 @@
+📊 Best features per generation for 'german_credit'
+🔧 Classifier used: decision_tree
+⏱️ Time taken: 1.31 seconds
+
+Generation 0 (15 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - credit_amount
+ - value_savings_stocks
+ - length_of_current_employment
+ - guarantors
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - age_years
+ - type_of_apartment
+ - no_of_credits_at_this_bank
+ - telephone
+ - foreign_worker
+
+Generation 1 (11 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - credit_amount
+ - instalment_per_cent
+ - guarantors
+ - duration_in_current_address
+ - age_years
+ - concurrent_credits
+ - no_of_credits_at_this_bank
+
+Generation 2 (11 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - credit_amount
+ - instalment_per_cent
+ - guarantors
+ - duration_in_current_address
+ - age_years
+ - concurrent_credits
+ - no_of_credits_at_this_bank
+
+Generation 3 (12 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - credit_amount
+ - instalment_per_cent
+ - guarantors
+ - duration_in_current_address
+ - age_years
+ - type_of_apartment
+ - no_of_credits_at_this_bank
+ - telephone
+ - foreign_worker
+
+Generation 4 (11 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - credit_amount
+ - value_savings_stocks
+ - length_of_current_employment
+ - guarantors
+ - duration_in_current_address
+ - no_of_credits_at_this_bank
+ - no_of_dependents

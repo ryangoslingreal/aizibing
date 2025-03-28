@@ -1,0 +1,14 @@
+📊 Best features per generation for 'german_credit'
+🔧 Classifier used: multinomial_nb
+⏱️ Time taken: 1.49 seconds
+
+Generation 0 (10 features):
+ - account_balance, - payment_status_of_previous_credit, - value_savings_stocks, - instalment_per_cent, - sex_marital_status, - duration_in_current_address, - most_valuable_available_asset, - age_years, - type_of_apartment, - occupation,
+Generation 1 (9 features):
+ - account_balance, - payment_status_of_previous_credit, - value_savings_stocks, - instalment_per_cent, - duration_in_current_address, - most_valuable_available_asset, - age_years, - type_of_apartment, - occupation,
+Generation 2 (9 features):
+ - account_balance, - payment_status_of_previous_credit, - value_savings_stocks, - instalment_per_cent, - duration_in_current_address, - most_valuable_available_asset, - age_years, - type_of_apartment, - occupation,
+Generation 3 (9 features):
+ - account_balance, - payment_status_of_previous_credit, - value_savings_stocks, - instalment_per_cent, - duration_in_current_address, - most_valuable_available_asset, - age_years, - type_of_apartment, - occupation,
+Generation 4 (9 features):
+ - account_balance, - payment_status_of_previous_credit, - value_savings_stocks, - instalment_per_cent, - duration_in_current_address, - most_valuable_available_asset, - age_years, - type_of_apartment, - occupation,

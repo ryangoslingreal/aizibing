@@ -1,0 +1,79 @@
+📊 Best features per generation for 'german_credit'
+🔧 Classifier used: random_forest
+⏱️ Time taken: 88.60 seconds
+
+Generation 0 (13 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - credit_amount
+ - instalment_per_cent
+ - sex_marital_status
+ - duration_in_current_address
+ - age_years
+ - concurrent_credits
+ - type_of_apartment
+ - no_of_dependents
+ - telephone
+ - foreign_worker
+
+Generation 1 (10 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - credit_amount
+ - value_savings_stocks
+ - instalment_per_cent
+ - guarantors
+ - most_valuable_available_asset
+ - age_years
+ - no_of_dependents
+ - foreign_worker
+
+Generation 2 (14 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - value_savings_stocks
+ - instalment_per_cent
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - type_of_apartment
+ - no_of_dependents
+ - telephone
+ - foreign_worker
+
+Generation 3 (14 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - value_savings_stocks
+ - instalment_per_cent
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - type_of_apartment
+ - no_of_dependents
+ - telephone
+ - foreign_worker
+
+Generation 4 (15 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - credit_amount
+ - value_savings_stocks
+ - instalment_per_cent
+ - sex_marital_status
+ - guarantors
+ - duration_in_current_address
+ - most_valuable_available_asset
+ - type_of_apartment
+ - no_of_credits_at_this_bank
+ - occupation
+ - foreign_worker

@@ -1,0 +1,67 @@
+📊 Best features per generation for 'german_credit'
+🔧 Classifier used: hinge_loss
+⏱️ Time taken: 1.27 seconds
+
+Generation 0 (8 features):
+ - payment_status_of_previous_credit
+ - purpose
+ - value_savings_stocks
+ - length_of_current_employment
+ - sex_marital_status
+ - most_valuable_available_asset
+ - age_years
+ - no_of_dependents
+
+Generation 1 (7 features):
+ - payment_status_of_previous_credit
+ - value_savings_stocks
+ - length_of_current_employment
+ - sex_marital_status
+ - most_valuable_available_asset
+ - age_years
+ - no_of_dependents
+
+Generation 2 (12 features):
+ - account_balance
+ - payment_status_of_previous_credit
+ - purpose
+ - value_savings_stocks
+ - length_of_current_employment
+ - instalment_per_cent
+ - sex_marital_status
+ - duration_in_current_address
+ - type_of_apartment
+ - no_of_credits_at_this_bank
+ - no_of_dependents
+ - telephone
+
+Generation 3 (13 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - value_savings_stocks
+ - length_of_current_employment
+ - instalment_per_cent
+ - sex_marital_status
+ - duration_in_current_address
+ - type_of_apartment
+ - no_of_credits_at_this_bank
+ - no_of_dependents
+ - telephone
+
+Generation 4 (14 features):
+ - account_balance
+ - duration_of_credit_monthly
+ - payment_status_of_previous_credit
+ - purpose
+ - credit_amount
+ - value_savings_stocks
+ - length_of_current_employment
+ - instalment_per_cent
+ - sex_marital_status
+ - duration_in_current_address
+ - type_of_apartment
+ - no_of_credits_at_this_bank
+ - no_of_dependents
+ - telephone

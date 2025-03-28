@@ -1,0 +1,14 @@
+📊 Best features per generation for 'german_credit'
+🔧 Classifier used: gaussian_nb
+⏱️ Time taken: 1.13 seconds
+
+Generation 0 (12 features):
+ - account_balance, - duration_of_credit_monthly, - payment_status_of_previous_credit, - purpose, - credit_amount, - instalment_per_cent, - sex_marital_status, - duration_in_current_address, - most_valuable_available_asset, - concurrent_credits, - occupation, - telephone,
+Generation 1 (12 features):
+ - account_balance, - duration_of_credit_monthly, - payment_status_of_previous_credit, - purpose, - credit_amount, - instalment_per_cent, - sex_marital_status, - duration_in_current_address, - most_valuable_available_asset, - concurrent_credits, - occupation, - telephone,
+Generation 2 (9 features):
+ - account_balance, - duration_of_credit_monthly, - credit_amount, - value_savings_stocks, - length_of_current_employment, - instalment_per_cent, - duration_in_current_address, - no_of_dependents, - telephone,
+Generation 3 (9 features):
+ - account_balance, - duration_of_credit_monthly, - credit_amount, - value_savings_stocks, - length_of_current_employment, - instalment_per_cent, - duration_in_current_address, - no_of_dependents, - telephone,
+Generation 4 (9 features):
+ - account_balance, - duration_of_credit_monthly, - payment_status_of_previous_credit, - purpose, - value_savings_stocks, - length_of_current_employment, - sex_marital_status, - concurrent_credits, - no_of_credits_at_this_bank,

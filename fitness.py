@@ -17,21 +17,21 @@ def gaussian_nb(X_train, y_train, X_test, y_test):
 
 def bernoulli_nb(X_train, y_train, X_test, y_test):
     """Trains and evaluates an individual using BernoulliNB."""
-    bnb = BernoulliNB()
-    bnb.fit(X_train, y_train)
-    return bnb.score(X_test, y_test)
+    clf = BernoulliNB()
+    clf.fit(X_train, y_train)
+    return clf.score(X_test, y_test)
  
 def multinomial_nb(X_train, y_train, X_test, y_test):
     """Trains and evaluates an individual using MultinomialNB."""
-    mnb = MultinomialNB()
-    mnb.fit(X_train, y_train)
-    return mnb.score(X_test, y_test)
+    clf = MultinomialNB()
+    clf.fit(X_train, y_train)
+    return clf.score(X_test, y_test)
 
 def xgboost_classifier(X_train, y_train, X_test, y_test):
     """Trains and evaluates using XGBoost Classifier."""
-    xc = xgb.XGBClassifier()
-    xc.fit(X_train, y_train)
-    return xc.score(X_test, y_test)
+    clf = xgb.XGBClassifier()
+    clf.fit(X_train, y_train)
+    return clf.score(X_test, y_test)
 
 def knn_classifier(X_train, y_train, X_test, y_test):
     """simple algorithm that classifies based on majority class of the nearest neighbors"""
