@@ -7,6 +7,7 @@ import concurrent.futures  # multi-threading
 # for feature names and outputting result
 from utils import *
 from load_a_dataset import *
+from fitness import *
 
 
 class GeneticAlgorithm:
@@ -17,6 +18,7 @@ class GeneticAlgorithm:
         self.population = []
         self.fitness_scores = []
         self.best_per_gen = []
+        self.accuracy_per_gen = []
 
         # Define crossover thresholds
         self.elite_size = int(params.ELITE_RATE * params.POPULATION)
@@ -62,7 +64,9 @@ class GeneticAlgorithm:
         self.fitness_scores = self.evaluate_population_parallel()
 
         self.sort_population()
+
         self.best_per_gen.append(self.population[0])  # storing top individual to list for resulting feature name
+        self.accuracy_per_gen.append(self.fitness_scores[0])  # adds accuracy to output
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
@@ -173,8 +177,9 @@ class GeneticAlgorithm:
         X_train, X_test = self.X[train_idx][:, individual], self.X[test_idx][:, individual]
         y_train, y_test = self.y[train_idx], self.y[test_idx]
 
-        # Train
-        return params.FITNESS(X_train, y_train, X_test, y_test)
+        accuracy = params.FITNESS(X_train, y_train, X_test, y_test)
+        penalty = params.FEATURE_COST * (sum(individual) / len(individual))
+        return accuracy - penalty
 
     @staticmethod
     def generateIndividuals(count, attributes):
@@ -220,22 +225,8 @@ if __name__ == "__main__":
     # indian_pine.data = indian_pine.data[random_indices]
     # indian_pine.target = indian_pine.target[random_indices]
 
-from fitness import (
-    gaussian_nb,
-    bernoulli_nb,
-    multinomial_nb,
-    xgboost_classifier,
-    knn_classifier,
-    hinge_loss,
-    svm_classifier,
-    decision_tree,
-    random_forest,
-    gradient_boosting_classifier,
-    adaboost_classifier,
-    mlp_classifier
-)
+
 from config import params
-from utils import output_result  # if this is your visualization/logging function
 
 ds_data = german_credit
 ds_name = 'german_credit'
@@ -243,16 +234,16 @@ ds_name = 'german_credit'
 fitness_functions = [
     gaussian_nb,
     bernoulli_nb,
-    multinomial_nb,
-    xgboost_classifier,
-    knn_classifier,
-    hinge_loss,
-    svm_classifier,
-    decision_tree,
-    random_forest,
-    gradient_boosting_classifier,
-    adaboost_classifier,
-    mlp_classifier
+    # multinomial_nb,
+    # xgboost_classifier,
+    # knn_classifier,
+    # hinge_loss,
+    # svm_classifier,
+    # decision_tree,
+    # random_forest,
+    # gradient_boosting_classifier,
+    # adaboost_classifier,
+    # mlp_classifier
 ]
 fitness_function_names = [func.__name__ for func in fitness_functions]
 
@@ -267,6 +258,7 @@ for func in fitness_functions:
     start_time = time.time()
 
     ga = GeneticAlgorithm(data=ds_data)
+    accuracy_per_gen = ga.accuracy_per_gen if hasattr(ga, 'accuracy_per_gen') else [None] * len(ga.best_per_gen)
 
     elapsed_time = time.time() - start_time  # Time taken for GA to run
 
@@ -275,6 +267,7 @@ for func in fitness_functions:
         feature_names=ga.data.feature_names,
         dataset_name=ds_name,
         fitness_function_name=fitness_function_name,
-        elapsed_time=elapsed_time
-
+        elapsed_time=elapsed_time,
+        accuracy_per_gen=accuracy_per_gen
     )
+

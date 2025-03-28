@@ -48,6 +48,7 @@ load_iris = sk_load_iris
 load_breast_cancer = sk_load_breast_cancer
 load_indian_pines = lambda: load_openml(41972)
 load_german_credit = lambda: load_openml(46416)
+load_arrythmia = lambda: load_openml(5)
 
 # Public interface
 __all__ = [

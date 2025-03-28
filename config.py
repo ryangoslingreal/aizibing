@@ -3,9 +3,10 @@ from types import SimpleNamespace
 import selection
 import crossover
 import mutation
-import fitness
 
 params = SimpleNamespace(
+    FEATURE_COST=0.01,  # adjust this to control how strongly you penalize large feature sets
+
     # GA Methods
     SELECTION=selection.roulette_wheel_selection,
     CROSSOVER=crossover.random_crossover,
@@ -13,7 +14,7 @@ params = SimpleNamespace(
     FITNESS=None,
 
     # GA Properties
-    GENERATIONS=5,
+    GENERATIONS=50,
     POPULATION=20,
     REPETITIONS=3,
     FOLDS=2,
@@ -23,7 +24,6 @@ params = SimpleNamespace(
 
     # Selection Properties
     TOURNAMENT_ROUNDS=5,
-
 
     # Mutation Properties
     ALLOW_CLONING=True,
