@@ -4,6 +4,7 @@ import selection
 import crossover
 import mutation
 import fitness
+#
 
 params = SimpleNamespace(
     # GA Methods
