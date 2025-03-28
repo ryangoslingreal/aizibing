@@ -1,4 +1,5 @@
 import random
+
 import os
 import time
 
@@ -39,7 +40,7 @@ def output_result(best_individuals, feature_names, dataset_name, fitness_functio
             selected = get_selected_feature_names(individual, feature_names)
             f.write(f"\nGeneration {i} ({len(selected)} features):\n")
             for name in selected:
-                f.write(f" - {name}\n")
+                f.write(f" - {name},")
 
     print(f"\n✅ Feature log saved to: {file_path}")
     print(f"⏱️ Time taken: {elapsed_time:.2f} seconds")
