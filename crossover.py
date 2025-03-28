@@ -23,3 +23,7 @@ def average_crossover(parent1, parent2):
         child.append(random.choice(pair))
 
     return verifyIndividual(child)
+
+def random_crossover(p1, p2):
+    crossover_point = random.randint(0, len(p1))
+    return p1[:crossover_point] + p2[crossover_point:]
