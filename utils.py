@@ -26,7 +26,7 @@ def print_name_from_best(best_per_gen, feature_names):
 
 
 
-def output_result(best_individuals, feature_names, dataset_name, fitness_function_name, elapsed_time, accuracy_per_gen=None):
+def output_result(best_individuals, feature_names, dataset_name, fitness_function_name, elapsed_time, accuracy_per_gen=None, generation_times=None):
     import os
 
     safe_name = dataset_name.lower().replace(" ", "_")
@@ -37,6 +37,9 @@ def output_result(best_individuals, feature_names, dataset_name, fitness_functio
         f.write(f"📊 Best features per generation for '{dataset_name}'\n")
         f.write(f"🔧 Classifier used: {fitness_function_name}\n")
         f.write(f"⏱️ Time taken: {elapsed_time:.2f} seconds\n")
+        if generation_times:
+            avg_time = sum(generation_times) / len(generation_times)
+            f.write(f"📈 Avg time per generation: {avg_time:.4f} seconds\n")
 
         for i, individual in enumerate(best_individuals):
             selected = get_selected_feature_names(individual, feature_names)
@@ -49,6 +52,7 @@ def output_result(best_individuals, feature_names, dataset_name, fitness_functio
 
     print(f"\n✅ Feature log saved to: {file_path}")
     print(f"⏱️ Time taken: {elapsed_time:.2f} seconds")
+
 
     
 def load_iris_with_noise(n):

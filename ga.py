@@ -19,6 +19,7 @@ class GeneticAlgorithm:
         self.fitness_scores = []
         self.best_per_gen = []
         self.accuracy_per_gen = []
+        self.generation_times = []
 
         # Define crossover thresholds
         self.elite_size = int(params.ELITE_RATE * params.POPULATION)
@@ -59,14 +60,15 @@ class GeneticAlgorithm:
         return unique_individuals
 
     def step(self):
+        start_time = time.time()
+
         self.pad_population()
-
         self.fitness_scores = self.evaluate_population_parallel()
-
         self.sort_population()
 
-        self.best_per_gen.append(self.population[0])  # storing top individual to list for resulting feature name
-        self.accuracy_per_gen.append(self.fitness_scores[0])  # adds accuracy to output
+        best_individual = self.population[0]
+        self.best_per_gen.append(best_individual)
+        self.accuracy_per_gen.append(self.fitness_scores[0])
 
         for i, (individual, fitness) in enumerate(zip(self.population, self.fitness_scores)):
             print(f"Position {i}: {individual}    Fitness: {fitness}")
@@ -103,6 +105,10 @@ class GeneticAlgorithm:
         # Reset population for next generation cycle        
         self.population = next_population
         self.fitness_scores = []
+
+        # Track how long this generation took
+        duration = time.time() - start_time
+        self.generation_times.append(duration)
 
     def sort_population(self):
         """Sorts population by fitness scores."""
@@ -220,12 +226,22 @@ if __name__ == "__main__":
     indian_pine = load_indian_pines()
     german_credit = load_german_credit()
 
-    ds_data = indian_pine
-    ds_name = 'indian_pine'
+    ds_data = german_credit
+    ds_name = 'german_credit'
 
     fitness_functions = [
-        hinge_loss
-        # Add more classifiers here
+        gaussian_nb,
+        bernoulli_nb,
+        multinomial_nb,
+        xgboost_classifier,
+        knn_classifier,
+        hinge_loss,
+        svm_classifier,
+        decision_tree,
+        random_forest,
+        gradient_boosting_classifier,
+        # adaboost_classifier,
+        # mlp_classifier
     ]
 
     for func in fitness_functions:
@@ -246,7 +262,10 @@ if __name__ == "__main__":
             dataset_name=ds_name,
             fitness_function_name=fitness_function_name,
             elapsed_time=elapsed_time,
-            accuracy_per_gen=accuracy_per_gen
+            accuracy_per_gen=ga.accuracy_per_gen,
+            generation_times=ga.generation_times  # ← include this!
         )
+
+
 
 
