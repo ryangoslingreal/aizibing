@@ -212,62 +212,41 @@ class GeneticAlgorithm:
 
 
 if __name__ == "__main__":
-    iris = load_iris()
+    from config import params
+    import time
+
+    iris = load_iris_with_noise(40)
     breast = load_breast_cancer()
     indian_pine = load_indian_pines()
     german_credit = load_german_credit()
 
-    # Set seed for reproducibility
-    # seed = 42
-    # np.random.seed(seed)
-    # num_samples = 1000
-    # random_indices = np.random.choice(indian_pine.data.shape[0], num_samples, replace=False)
-    # indian_pine.data = indian_pine.data[random_indices]
-    # indian_pine.target = indian_pine.target[random_indices]
+    ds_data = indian_pine
+    ds_name = 'indian_pine'
 
+    fitness_functions = [
+        hinge_loss
+        # Add more classifiers here
+    ]
 
-from config import params
+    for func in fitness_functions:
+        params.FITNESS = func
+        fitness_function_name = func.__name__
+        print(f"\n--- Running GA with fitness function: {fitness_function_name} ---")
 
-ds_data = german_credit
-ds_name = 'german_credit'
+        start_time = time.time()
 
-fitness_functions = [
-    gaussian_nb,
-    bernoulli_nb,
-    # multinomial_nb,
-    # xgboost_classifier,
-    # knn_classifier,
-    # hinge_loss,
-    # svm_classifier,
-    # decision_tree,
-    # random_forest,
-    # gradient_boosting_classifier,
-    # adaboost_classifier,
-    # mlp_classifier
-]
-fitness_function_names = [func.__name__ for func in fitness_functions]
+        ga = GeneticAlgorithm(data=ds_data)
+        accuracy_per_gen = ga.accuracy_per_gen if hasattr(ga, 'accuracy_per_gen') else [None] * len(ga.best_per_gen)
 
-import time
+        elapsed_time = time.time() - start_time
 
-for func in fitness_functions:
-    params.FITNESS = func
-    fitness_function_name = func.__name__
-    print(f"\n--- Running GA with fitness function: {fitness_function_name} ---")
+        output_result(
+            best_individuals=ga.best_per_gen,
+            feature_names=ga.data.feature_names,
+            dataset_name=ds_name,
+            fitness_function_name=fitness_function_name,
+            elapsed_time=elapsed_time,
+            accuracy_per_gen=accuracy_per_gen
+        )
 
-    # Start timer BEFORE GA begins
-    start_time = time.time()
-
-    ga = GeneticAlgorithm(data=ds_data)
-    accuracy_per_gen = ga.accuracy_per_gen if hasattr(ga, 'accuracy_per_gen') else [None] * len(ga.best_per_gen)
-
-    elapsed_time = time.time() - start_time  # Time taken for GA to run
-
-    output_result(
-        best_individuals=ga.best_per_gen,
-        feature_names=ga.data.feature_names,
-        dataset_name=ds_name,
-        fitness_function_name=fitness_function_name,
-        elapsed_time=elapsed_time,
-        accuracy_per_gen=accuracy_per_gen
-    )
 

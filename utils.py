@@ -26,24 +26,30 @@ def print_name_from_best(best_per_gen, feature_names):
 
 
 
-def output_result(best_individuals, feature_names, dataset_name):
-    """
-    Saves best individual features from each generation to a file in the project root.
-    """
+def output_result(best_individuals, feature_names, dataset_name, fitness_function_name, elapsed_time, accuracy_per_gen=None):
+    import os
+
     safe_name = dataset_name.lower().replace(" ", "_")
-    filename = f"{safe_name}_results.txt"
+    filename = f"{safe_name}_{fitness_function_name}_results.txt"
     file_path = os.path.join(os.getcwd(), filename)
 
     with open(file_path, 'w', encoding='utf-8') as f:
-        f.write(f"📊 Best features per generation for '{dataset_name}'\n\n")
+        f.write(f"📊 Best features per generation for '{dataset_name}'\n")
+        f.write(f"🔧 Classifier used: {fitness_function_name}\n")
+        f.write(f"⏱️ Time taken: {elapsed_time:.2f} seconds\n")
+
         for i, individual in enumerate(best_individuals):
             selected = get_selected_feature_names(individual, feature_names)
-            f.write(f"Generation {i} ({len(selected)} features):\n")
+            acc = accuracy_per_gen[i] if accuracy_per_gen else None
+            acc_str = f" | Accuracy: {acc:.4f}" if acc is not None else ""
+            f.write(f"\nGeneration {i} ({len(selected)} features){acc_str}:\n")
             for name in selected:
-                f.write(f" - {name}\n")
+                f.write(f" {name},")
             f.write("\n")
 
     print(f"\n✅ Feature log saved to: {file_path}")
+    print(f"⏱️ Time taken: {elapsed_time:.2f} seconds")
+
     
 def load_iris_with_noise(n):
     """Load iris dataset and adds `n` columns of noise to features."""
