@@ -4,7 +4,6 @@ import selection
 import crossover
 import mutation
 import fitness
-#
 
 params = SimpleNamespace(
     # GA Methods
@@ -18,9 +17,9 @@ params = SimpleNamespace(
     POPULATION=10,
     REPETITIONS=5,
     FOLDS=5,
-    ELITE_RATE=0.25,
-    PADDING_RATE=0.05,
-    MUTATION_RATE=0.05,  # maybe implement 'variable mutation' via hamming distance?
+    ELITE_RATE=0.2,
+    PADDING_RATE=0.2,
+    MUTATION_RATE=0.1,  # maybe implement 'variable mutation' via hamming distance?
 
     # Selection Properties
     TOURNAMENT_ROUNDS=5,
