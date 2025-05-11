@@ -35,7 +35,7 @@ class GeneticAlgorithm:
         unique_individuals = []
         seen_individuals = set()  # track unique individuals
 
-        for i, individual in enumerate(self.population):
+        for individual in self.population:
             individual_tuple = tuple(individual) # make individual hashable
 
             # if unique
