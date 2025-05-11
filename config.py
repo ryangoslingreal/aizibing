@@ -24,7 +24,6 @@ params = SimpleNamespace(
     # Selection Properties
     TOURNAMENT_ROUNDS=5,
 
-
     # Mutation Properties
     ALLOW_CLONING=True,
     MUTATE_ON_CLONE=True

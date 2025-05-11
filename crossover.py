@@ -1,9 +1,8 @@
-from individual import Individual
 import random
 
 def splice_crossover(parent1, parent2):
     """Performs splice crossover between two parents and returns a random of two offspring."""
-    
+    from individual import Individual
     cut_length = round(len(parent1.gene) * 0.3)  # Ensure at least 1 element is swapped
     start_index = random.randint(0, len(parent1.gene) - cut_length)
     end_index = start_index + cut_length
@@ -17,7 +16,7 @@ def splice_crossover(parent1, parent2):
 
 def average_crossover(parent1, parent2):
     """Performs average crossover between two parents and returns offspring."""
-    
+    from individual import Individual
     paired_genes = zip(parent1.gene, parent2.gene)
     child_gene = []
     for pair in paired_genes:
@@ -28,6 +27,7 @@ def average_crossover(parent1, parent2):
     return Individual.verify_individual(child)
 
 def random_crossover(p1, p2):
+    from individual import Individual
     crossover_point = random.randint(0, len(p1.gene))
     child_gene = p1.gene[:crossover_point] + p2.gene[crossover_point:]
     child = Individual(child_gene)

@@ -1,4 +1,5 @@
 from sklearn.datasets import load_iris
+from sklearn.model_selection import StratifiedKFold
 from sklearn.utils import Bunch
 import numpy as np
 
@@ -15,3 +16,13 @@ def load_iris_with_noise(n):
     X_noisy = np.hstack((X, noise))
 
     return Bunch(data=X_noisy, target=y, feature_names=iris.feature_names + [f"noise_{i+1}" for i in range(n)])
+
+def generate_n_folds(X, y, rep, fold):
+    """Generates stratified k-fold splits for cross-validation."""
+        
+    rep_folds = {}
+    for r in range(rep):
+        skf = StratifiedKFold(n_splits=fold, shuffle=True)
+        rep_folds[r] = list(skf.split(X, y))
+            
+    return rep_folds

@@ -1,10 +1,9 @@
-from individual import Individual
 import numpy as np
 import random
 
 def shuffle_mutate(individual):
     """Randomly shuffles the order of features in the individual."""
-
+    from individual import Individual
     original_gene = list(individual.gene)
     mutated_gene = original_gene.copy()
     
@@ -12,12 +11,13 @@ def shuffle_mutate(individual):
         random.shuffle(mutated_gene)
     
     individual.gene = tuple(mutated_gene)
+    individual._fitness = None
     return Individual.verify_individual(individual)
 
 
 def random_mutate(individual, n=1):
     """Randomly changes `n` random features in the individual."""
-
+    from individual import Individual
     original_gene = list(individual.gene)
     mutated_gene = original_gene.copy()
     
@@ -28,11 +28,12 @@ def random_mutate(individual, n=1):
             mutated_gene[gene_index] = not(mutated_gene[gene_index])
             
     individual.gene = tuple(mutated_gene)
+    individual._fitness = None
     return Individual.verify_individual(individual)
 
 def flip_mutate(individual, n=1):
     """Selects two random features and swaps their states `n` times."""
-    
+    from individual import Individual
     original_gene = list(individual.gene)
     mutated_gene = original_gene.copy()
 
@@ -42,4 +43,5 @@ def flip_mutate(individual, n=1):
             mutated_gene[gene1], mutated_gene[gene2] = mutated_gene[gene2], mutated_gene[gene1]
             
     individual.gene = tuple(mutated_gene)
+    individual._fitness = None
     return Individual.verify_individual(individual)

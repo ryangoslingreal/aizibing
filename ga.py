@@ -1,10 +1,8 @@
 from sklearn.model_selection import StratifiedKFold
-import numpy as np
 import random
 
-from functools import cache
-
 from utils import *
+from preprocessing import preprocess_data
 from individual import Individual
 from config import params
 
@@ -22,12 +20,10 @@ class GeneticAlgorithm:
         self.breeding_size = params.POPULATION - self.padding_size - self.elite_size
         
         # Preprocess dataset
-        self.X, self.y = data.data, data.target
-        self.attributes = self.X.shape[1]
-        self.rep_folds = self.generate_n_folds(self.X, self.y, params.REPETITIONS, params.FOLDS)
+        preprocess_data(data)
         
         # Compute baseline fitness
-        baseline_fitness = self.rep_individual(tuple([True for _ in range(self.attributes)]))
+        baseline_fitness = Individual.rep_individual(tuple([True for _ in range(Individual.attributes)]))
         print(f"Baseline fitness: {baseline_fitness}")
         
         for g in range(params.GENERATIONS):
@@ -54,8 +50,6 @@ class GeneticAlgorithm:
     
     def step(self):
         self.pad_population()
-        
-        self.evaluate_population()
 
         self.sort_population()
         
@@ -97,8 +91,6 @@ class GeneticAlgorithm:
 
     def sort_population(self):
         """Sorts population by fitness."""
-        for ind in self.population:
-            assert ind.fitness is not None, f"Fitness not set for individual: {ind.gene}"
         self.population = sorted(self.population, key=lambda ind: ind.fitness, reverse=True)
     
     def pad_population(self):
@@ -106,74 +98,7 @@ class GeneticAlgorithm:
         
         difference = params.POPULATION - len(self.population)
         if difference > 0:
-            self.population += self.generate_individuals(difference, self.attributes)
-
-
-    def evaluate_population(self):
-        """Evaluates the fitness of all individuals in the population and stores their scores."""
-        
-        for individual in self.population:
-            individual.fitness = self.rep_individual(individual.gene) # Extract gene for caching
-
-    @cache
-    def rep_individual(self, gene):
-        """Computes the average fitness of an individual across multiple repetitions and caches result."""
-        
-        rep_fitness = []
-        
-        # Rep loop
-        for r in range(params.REPETITIONS):
-            # Fold loop
-            fold_fitness = [
-                self.evaluate_individual(gene, train_idx, test_idx)
-                for train_idx, test_idx in self.rep_folds[r]
-            ]
-                
-            # Calculate average fitness across all folds
-            rep_fitness.append(np.mean(fold_fitness))
-
-        # Calculate average fitness across all reps
-        return np.mean(rep_fitness)
-    
-    def evaluate_individual(self, gene, train_idx, test_idx):
-        """Applies individual attribute mask and evaluates an individual using the specified fitness function."""
-        
-        # Apply attribute mask
-        X_train, X_test = self.X[train_idx][:, gene], self.X[test_idx][:, gene]
-        y_train, y_test = self.y[train_idx], self.y[test_idx]
-                    
-        # Train
-        return params.FITNESS(X_train, y_train, X_test, y_test)
-    
-    @staticmethod
-    def generate_individuals(count, attributes):
-        """Generates a specified number of random individuals."""
-        
-        population = []
-        for _ in range(count):
-            # Generate random gene
-            # Ensure gene is valid
-            # If valid, continue
-            # Else, regenerate
-            while True:
-                gene = [random.choice([True, False]) for _ in range(attributes)]
-                if any(gene):
-                    break
-            
-            population.append(Individual(gene))
-            
-        return population
-    
-    @staticmethod
-    def generate_n_folds(X, y, rep, fold):
-        """Generates stratified k-fold splits for cross-validation."""
-        
-        rep_folds = {}
-        for r in range(rep):
-            skf = StratifiedKFold(n_splits=fold, shuffle=True)
-            rep_folds[r] = list(skf.split(X, y))
-            
-        return rep_folds
+            self.population += Individual.generate_individuals(difference)
 
 if __name__ == "__main__":
     iris = load_iris()

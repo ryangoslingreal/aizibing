@@ -1,5 +1,3 @@
-from individual import Individual
-
 import numpy as np
 import math
 
