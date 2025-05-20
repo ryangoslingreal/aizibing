@@ -10,10 +10,7 @@ def shuffle_mutate(individual):
     while(mutated_gene == original_gene):
         random.shuffle(mutated_gene)
     
-    individual.gene = tuple(mutated_gene)
-    individual._fitness = None
-    return Individual.verify_individual(individual)
-
+    return Individual.verify_individual(Individual(mutated_gene))
 
 def random_mutate(individual, n=1):
     """Randomly changes `n` random features in the individual."""
@@ -27,9 +24,7 @@ def random_mutate(individual, n=1):
         for gene_index in gene_indices:
             mutated_gene[gene_index] = not(mutated_gene[gene_index])
             
-    individual.gene = tuple(mutated_gene)
-    individual._fitness = None
-    return Individual.verify_individual(individual)
+    return Individual.verify_individual(Individual(mutated_gene))
 
 def flip_mutate(individual, n=1):
     """Selects two random features and swaps their states `n` times."""
@@ -42,6 +37,4 @@ def flip_mutate(individual, n=1):
             gene1, gene2 =  np.random.choice(len(mutated_gene), size=2, replace=False)
             mutated_gene[gene1], mutated_gene[gene2] = mutated_gene[gene2], mutated_gene[gene1]
             
-    individual.gene = tuple(mutated_gene)
-    individual._fitness = None
-    return Individual.verify_individual(individual)
+    return Individual.verify_individual(Individual(mutated_gene))

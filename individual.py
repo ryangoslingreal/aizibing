@@ -1,5 +1,6 @@
 from functools import cache
 import numpy as np
+import traceback
 import random
 
 from config import params
@@ -17,7 +18,12 @@ class Individual:
     @property
     def fitness(self):
         if self._fitness is None:
-            self._fitness = self.rep_individual(self.gene)
+            # If FEATURE_PENALTY = True, use parameters
+            # Else, use defaults 
+            self._fitness = (
+                (params.ALPHA if params.FEATURE_PENALTY else 1) * self.rep_individual(self.gene) - 
+                (params.BETA if params.FEATURE_PENALTY else 0) * sum(self.gene)
+            )
         return self._fitness
             
     @fitness.setter
@@ -28,6 +34,10 @@ class Individual:
     @cache
     def rep_individual(cls, gene):
         """Computes the average fitness of an individual across multiple repetitions and caches result."""
+        
+        if not any(gene):
+            Individual.log_bad_gene(gene)
+            return 0
         
         rep_fitness = []
         
@@ -85,3 +95,11 @@ class Individual:
             gene[random_index] = True
 
         return Individual(gene)
+    
+    @staticmethod
+    def log_bad_gene(gene):
+        print("\n[⚠️ BAD GENE DETECTED ⚠️]")
+        print("Gene:", gene)
+        print("Length:", len(gene))
+        print("Sum:", sum(gene))
+        traceback.print_stack()
