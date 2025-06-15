@@ -80,13 +80,19 @@ class GeneticAlgorithm:
                     
         # Apply basic mutation rate
         for i, individual in enumerate(next_population):
-            if random.random() < params.MUTATION_RATE:
+            if params.ADAPTIVE_MUTATION is not None:
+                hamming_distance = params.HAMMING_DISTANCE(individual, next_population)
+                mutation_rate = params.ADAPTIVE_MUTATION(hamming_distance)
+            else:
+                mutation_rate = params.BASIC_MUTATION_RATE
+                
+            if random.random() < mutation_rate:
                 next_population[i] = params.MUTATION(individual)
 
         # Elite carry over
         next_population.extend(self.population[:self.elite_size])
         
-        # Reset population for next generation cycle        
+        # Reset population for next generation cycle
         self.population = next_population
 
     def sort_population(self):

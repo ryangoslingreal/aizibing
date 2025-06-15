@@ -4,6 +4,8 @@ import selection
 import crossover
 import mutation
 import fitness
+import hammingdistance
+import mutationrate
 
 params = SimpleNamespace(
     # GA Methods
@@ -11,6 +13,8 @@ params = SimpleNamespace(
     CROSSOVER=crossover.random_crossover,
     MUTATION=mutation.random_mutate,
     FITNESS=fitness.gaussian_nb,
+    HAMMING_DISTANCE=hammingdistance.bitwise_hamming_distance,
+    ADAPTIVE_MUTATION=mutationrate.linear,
 
     # GA Properties
     GENERATIONS=10,
@@ -19,7 +23,7 @@ params = SimpleNamespace(
     FOLDS=5,
     ELITE_RATE=0.2,
     PADDING_RATE=0.2,
-    MUTATION_RATE=0.1,  # maybe implement 'variable mutation' via hamming distance?
+    BASIC_MUTATION_RATE=0.1,
     
     # Fitness Properties
     FEATURE_PENALTY=True,
